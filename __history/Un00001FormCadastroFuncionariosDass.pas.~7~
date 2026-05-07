@@ -5,8 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.ComCtrls, Vcl.Grids,
-  Vcl.DBGrids, Vcl.ExtCtrls, Vcl.StdCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.ComCtrls;
 
 type
   TFormCadastroFuncionariosDass = class(TForm)
@@ -14,19 +13,7 @@ type
     TPPaginaControle: TPageControl;
     TsAbaListagem: TTabSheet;
     TsAbaCadastro: TTabSheet;
-    DbGridFuncionarios: TDBGrid;
-    TpPainelPesquisa: TPanel;
-    edtNome: TEdit;
-    TbBotaoPesquisar: TButton;
-    TcbTamanhoCamisa: TComboBox;
-    LblNome: TLabel;
-    LblCpf: TLabel;
-    EdtCpf: TEdit;
-    LblTamCamisa: TLabel;
-    LblTamCalcado: TLabel;
-    EdtTamCalcado: TEdit;
     procedure FormCreate(Sender: TObject);
-    procedure FormShow(Sender: TObject);
 
   private
     { Private declarations }
@@ -48,14 +35,8 @@ procedure TFormCadastroFuncionariosDass.FormCreate(Sender: TObject);
 begin
   if Assigned(Dm00001CadastroFuncionariosDass) then
   begin
-    DsFuncionarios.DataSet := Dm00001CadastroFuncionariosDass.
-      FdTabelaFuncionarios;
+    DsFuncionarios.DataSet := Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios;
   end;
-end;
-
-procedure TFormCadastroFuncionariosDass.FormShow(Sender: TObject);
-begin
-  edtNome.SetFocus;
 end;
 
 end.

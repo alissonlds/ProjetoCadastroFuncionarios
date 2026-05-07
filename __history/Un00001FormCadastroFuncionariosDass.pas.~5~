@@ -1,0 +1,45 @@
+unit Un00001FormCadastroFuncionariosDass;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB;
+
+type
+  TFormCadastroFuncionariosDass = class(TForm)
+    DsFuncionarios: TDataSource;
+    procedure FormCreate(Sender: TObject);
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+
+  end;
+
+var
+  FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass;
+
+implementation
+
+{$R *.dfm}
+
+uses Un00001DmCadastroFuncionariosDass;
+
+procedure TFormCadastroFuncionariosDass.FormCreate(Sender: TObject);
+begin
+  if Assigned(dmDados) then
+  begin
+    DsFuncionarios.DataSet := dmDados.tblFuncionarios;
+
+    // Inicializa os campos da tela (Opcional, mas garante o link)
+    dbgridListagem.DataSource := DsFuncionarios;
+    dbeditNome.DataSource := DsFuncionarios;
+    dbeditCPF.DataSource := DsFuncionarios;
+    // ... e assim por diante para Camisa, Calçado, etc.
+  end;
+end;
+
+end.

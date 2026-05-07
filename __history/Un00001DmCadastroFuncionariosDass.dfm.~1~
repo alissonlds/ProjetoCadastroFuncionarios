@@ -1,0 +1,68 @@
+object DataModule1: TDataModule1
+  OnCreate = DataModuleCreate
+  Height = 480
+  Width = 640
+  object FdConexaoProjeto: TFDConnection
+    Params.Strings = (
+      'Database=C:\Projetos\Base de dados\FUNCIONARIOS_DASS.FDB'
+      'User_Name=SYSDBA'
+      'Password=masterkey'
+      'Protocol=TCPIP'
+      'Server=localhost'
+      'DriverID=FB')
+    Connected = True
+    Left = 88
+    Top = 32
+  end
+  object FdLink: TFDPhysFBDriverLink
+    VendorLib = 
+      'C:\Program Files (x86)\HK-Software\IBExpert\Firebird3\fbclient.d' +
+      'll'
+    OnDriverCreated = FdLinkDriverCreated
+    Left = 184
+    Top = 32
+  end
+  object FdTabelaFuncionarios: TFDTable
+    IndexFieldNames = 'ID'
+    Connection = FdConexaoProjeto
+    ResourceOptions.AssignedValues = [rvEscapeExpand]
+    UpdateOptions.AssignedValues = [uvGeneratorName]
+    UpdateOptions.GeneratorName = 'GEN_FUNCIONARIOS_ID'
+    UpdateOptions.AutoIncFields = 'ID'
+    TableName = 'FUNCIONARIOS'
+    Left = 88
+    Top = 96
+    object FdTabelaFuncionariosID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object FdTabelaFuncionariosNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      Required = True
+      Size = 100
+    end
+    object FdTabelaFuncionariosCPF: TStringField
+      FieldName = 'CPF'
+      Origin = 'CPF'
+      Required = True
+      Size = 11
+    end
+    object FdTabelaFuncionariosEMAIL: TStringField
+      FieldName = 'EMAIL'
+      Origin = 'EMAIL'
+      Size = 100
+    end
+    object FdTabelaFuncionariosTAMANHO_CAMISA: TStringField
+      FieldName = 'TAMANHO_CAMISA'
+      Origin = 'TAMANHO_CAMISA'
+      Size = 3
+    end
+    object FdTabelaFuncionariosTAMANHO_CALCADO: TIntegerField
+      FieldName = 'TAMANHO_CALCADO'
+      Origin = 'TAMANHO_CALCADO'
+    end
+  end
+end

@@ -11,7 +11,6 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
   Font.Name = 'Segoe UI'
   Font.Style = []
   OnCreate = FormCreate
-  OnShow = FormShow
   TextHeight = 15
   object TPPaginaControle: TPageControl
     Left = 0
@@ -81,8 +80,8 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
           Color = clBackground
           ParentColor = False
         end
-        object edtNome: TEdit
-          Left = 125
+        object t: TEdit
+          Left = 124
           Top = 4
           Width = 314
           Height = 21
@@ -94,7 +93,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
           Width = 111
           Height = 43
           Caption = 'Pesquisar'
-          TabOrder = 4
+          TabOrder = 1
         end
         object TcbTamanhoCamisa: TComboBox
           Left = 124
@@ -118,7 +117,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
           Top = 31
           Width = 314
           Height = 21
-          TabOrder = 1
+          TabOrder = 3
         end
         object EdtTamCalcado: TEdit
           Left = 124
@@ -126,7 +125,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
           Width = 45
           Height = 21
           NumbersOnly = True
-          TabOrder = 3
+          TabOrder = 4
         end
       end
     end
