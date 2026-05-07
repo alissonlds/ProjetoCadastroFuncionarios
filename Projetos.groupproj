@@ -1,0 +1,36 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{2E3A4533-171E-484E-981F-6DE79F9FE265}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="ProjetoCadastroFuncionariosDass.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="ProjetoCadastroFuncionariosDass">
+        <MSBuild Projects="ProjetoCadastroFuncionariosDass.dproj"/>
+    </Target>
+    <Target Name="ProjetoCadastroFuncionariosDass:Clean">
+        <MSBuild Projects="ProjetoCadastroFuncionariosDass.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ProjetoCadastroFuncionariosDass:Make">
+        <MSBuild Projects="ProjetoCadastroFuncionariosDass.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="ProjetoCadastroFuncionariosDass"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="ProjetoCadastroFuncionariosDass:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="ProjetoCadastroFuncionariosDass:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
