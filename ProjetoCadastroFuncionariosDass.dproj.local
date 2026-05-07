@@ -1,10 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
-  <Transactions>
-    <Transaction>2026/05/06 23:00:28.235,=C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2026/05/06 23:00:58.825,C:\Projetos\Projeto Cadastro Funcionarios Dass\Un00001FormCadastroFuncionariosDass.dfm=C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
-    <Transaction>2026/05/06 23:00:58.825,C:\Projetos\Projeto Cadastro Funcionarios Dass\Un00001FormCadastroFuncionariosDass.pas=C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2026/05/06 23:02:05.335,C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\ProjetoCadastroFuncionariosDass.dproj=C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
-    <Transaction>2026/05/06 23:08:44.774,C:\Projetos\Projeto Cadastro Funcionarios Dass\ProjetoCadastroFuncionariosDass.dproj=C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\ProjetoCadastroFuncionariosDass.dproj</Transaction>
-  </Transactions>
+	<Transactions>
+    <Transaction>2026/05/06 23:00:28.000.235,=C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2026/05/06 23:00:58.000.825,C:\Projetos\Projeto Cadastro Funcionarios Dass\Un00001FormCadastroFuncionariosDass.pas=C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2026/05/06 23:00:58.000.825,C:\Projetos\Projeto Cadastro Funcionarios Dass\Un00001FormCadastroFuncionariosDass.dfm=C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2026/05/06 23:02:05.000.335,C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\ProjetoCadastroFuncionariosDass.dproj=C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2026/05/06 23:08:44.000.774,C:\Projetos\Projeto Cadastro Funcionarios Dass\ProjetoCadastroFuncionariosDass.dproj=C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\ProjetoCadastroFuncionariosDass.dproj</Transaction>
+    <Transaction>2026/05/07 00:06:52.921,=C:\Projetos\Projeto Cadastro Funcionarios Dass\Unit1.pas</Transaction>
+    <Transaction>2026/05/07 00:07:25.925,C:\Projetos\Projeto Cadastro Funcionarios Dass\Dm00001CadastroFuncionariosDass.dfm=C:\Projetos\Projeto Cadastro Funcionarios Dass\Unit1.dfm</Transaction>
+    <Transaction>2026/05/07 00:07:25.925,C:\Projetos\Projeto Cadastro Funcionarios Dass\Dm00001CadastroFuncionariosDass.pas=C:\Projetos\Projeto Cadastro Funcionarios Dass\Unit1.pas</Transaction>
+  </Transactions>  <ProjectSortOrder AutoSort="0" SortType="0">
+    <File Path="Dm00001CadastroFuncionariosDass.pas"/>
+    <File Path="Dm00001CadastroFuncionariosDass.dfm"/>
+    <File Path="Un00001FormCadastroFuncionariosDass.pas"/>
+    <File Path="Un00001FormCadastroFuncionariosDass.dfm"/>
+  </ProjectSortOrder>
 </BorlandProject>
