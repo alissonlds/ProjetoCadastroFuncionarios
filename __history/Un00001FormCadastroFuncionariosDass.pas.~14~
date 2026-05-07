@@ -25,8 +25,6 @@ type
     LblTamCamisa: TLabel;
     LblTamCalcado: TLabel;
     EdtTamCalcado: TEdit;
-    LblEmail: TLabel;
-    EdtEmail: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
 

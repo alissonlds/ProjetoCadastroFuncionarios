@@ -1,7 +1,7 @@
 object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
   Left = 0
   Top = 0
-  Caption = 'Funcion'#225'rios Dass'
+  Caption = 'Cadastro de Funcion'#225'rios Dass'
   ClientHeight = 441
   ClientWidth = 624
   Color = clBtnFace
