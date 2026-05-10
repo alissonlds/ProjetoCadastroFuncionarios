@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.ComCtrls, Vcl.Grids,
-  Vcl.DBGrids, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Mask;
+  Vcl.DBGrids, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Mask, Vcl.Buttons, System.ImageList, Vcl.ImgList;
 
 type
   TFormCadastroFuncionariosDass = class(TForm)
@@ -28,6 +28,13 @@ type
     EdtEmail: TEdit;
     EdtCpf: TMaskEdit;
     TpPainelCadastro: TPanel;
+    TpPainelAcoes: TPanel;
+    BtnNovo: TSpeedButton;
+    BtnEditar: TSpeedButton;
+    BtnSalvar: TSpeedButton;
+    BtnCancelar: TSpeedButton;
+    BtnExcluir: TSpeedButton;
+    TiListaImagens: TImageList;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);

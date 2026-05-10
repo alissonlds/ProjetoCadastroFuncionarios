@@ -22,10 +22,10 @@ Const
     'INSERT INTO FUNCIONARIOS (NOME, CPF, EMAIL, TAMANHO_CAMISA, TAMANHO_CALCADO) '
     + 'VALUES (:pNome, :pCpf, :pEmail, :pCamiseta, :pCalcado)';
 
-  CCondicaoNome = 'AND FUNCIONARIOS.NOME = %0:S';
-  CCondicaoEmail = 'AND FUNCIONARIOS.EMAIL = %0:S';
-  CCondicaoCpf = 'AND FUNCIONARIOS.CPF = %0:S';
-  CCondicaoTamCamiseta = 'AND FUNCIONARIOS.TAMANHO_CAMISA = %0:S';
+  CCondicaoNome = 'AND FUNCIONARIOS.NOME = ''%0:S''';
+  CCondicaoEmail = 'AND FUNCIONARIOS.EMAIL = ''%0:S''';
+  CCondicaoCpf = 'AND FUNCIONARIOS.CPF = ''%0:S''';
+  CCondicaoTamCamiseta = 'AND FUNCIONARIOS.TAMANHO_CAMISA = ''%0:S''';
   CCondicaoTamCalcado = 'AND FUNCIONARIOS.TAMANHO_CALCADO = %0:D';
 
 implementation

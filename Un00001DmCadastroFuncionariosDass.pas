@@ -84,6 +84,10 @@ begin
   // 3. Executa e envia para o DataSource (que enviará para a Grade)
   try
     FdTabelaFuncionarios.Open;
+
+    IF FdTabelaFuncionarios.IsEmpty then
+      Application.MessageBox('Nenhum registro encontrado.', 'Validação',
+        MB_OK + MB_ICONEXCLAMATION);
   except
     on E: Exception do
       raise Exception.Create('Erro na consulta: ' + E.Message);
@@ -181,7 +185,7 @@ begin
 
   If Not Result Then
     Application.MessageBox('O CPF é inválido.', 'Validação',
-      MB_OK + MB_ICONERROR);
+      MB_OK + MB_ICONEXCLAMATION);
 end;
 
 function TDm00001CadastroFuncionariosDass.ValidouEmail
@@ -206,7 +210,7 @@ begin
 
   IF Not Result Then
     Application.MessageBox('O e-mail não é válido.', 'Validação',
-      MB_OK + MB_ICONERROR);
+      MB_OK + MB_ICONEXCLAMATION);
 end;
 
 function TDm00001CadastroFuncionariosDass.ValidouNome(Atexto: String): Boolean;
@@ -216,7 +220,7 @@ begin
   Begin
     Result := False;
     Application.MessageBox('O nome é obrigatório.', 'Validação',
-      MB_OK + MB_ICONERROR);
+      MB_OK + MB_ICONEXCLAMATION);
   End;
 end;
 
@@ -229,7 +233,7 @@ begin
     Result := False;
     Application.MessageBox
       ('Tamanho de calçado inválido. Informe um valor entre 10 e 60.',
-      'Validação', MB_OK + MB_ICONERROR);
+      'Validação', MB_OK + MB_ICONEXCLAMATION);
   end;
 end;
 
@@ -241,7 +245,7 @@ begin
   Begin
     Result := False;
     Application.MessageBox('O tamanho de camisa é obrigatório.', 'Validação',
-      MB_OK + MB_ICONERROR);
+      MB_OK + MB_ICONEXCLAMATION);
   End;
 
 end;
