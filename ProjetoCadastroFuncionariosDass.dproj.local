@@ -2,19 +2,23 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>2026/05/06 23:00:28.000.235,=C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2026/05/06 23:00:58.000.825,C:\Projetos\Projeto Cadastro Funcionarios Dass\Un00001FormCadastroFuncionariosDass.pas=C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2026/05/06 23:00:58.000.825,C:\Projetos\Projeto Cadastro Funcionarios Dass\Un00001FormCadastroFuncionariosDass.dfm=C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
-    <Transaction>2026/05/06 23:02:05.000.335,C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\ProjetoCadastroFuncionariosDass.dproj=C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
-    <Transaction>2026/05/06 23:08:44.000.774,C:\Projetos\Projeto Cadastro Funcionarios Dass\ProjetoCadastroFuncionariosDass.dproj=C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\ProjetoCadastroFuncionariosDass.dproj</Transaction>
-    <Transaction>2026/05/07 00:06:52.921,=C:\Projetos\Projeto Cadastro Funcionarios Dass\Unit1.pas</Transaction>
-    <Transaction>2026/05/07 00:07:25.925,C:\Projetos\Projeto Cadastro Funcionarios Dass\Dm00001CadastroFuncionariosDass.pas=C:\Projetos\Projeto Cadastro Funcionarios Dass\Unit1.pas</Transaction>
-    <Transaction>2026/05/07 00:07:25.925,C:\Projetos\Projeto Cadastro Funcionarios Dass\Dm00001CadastroFuncionariosDass.dfm=C:\Projetos\Projeto Cadastro Funcionarios Dass\Unit1.dfm</Transaction>
-    <Transaction>2026/05/07 00:33:44.088,C:\Projetos\Projeto Cadastro Funcionarios Dass\Un00001DmCadastroFuncionariosDass.dfm=C:\Projetos\Projeto Cadastro Funcionarios Dass\Dm00001CadastroFuncionariosDass.dfm</Transaction>
-    <Transaction>2026/05/07 00:33:44.088,C:\Projetos\Projeto Cadastro Funcionarios Dass\Un00001DmCadastroFuncionariosDass.pas=C:\Projetos\Projeto Cadastro Funcionarios Dass\Dm00001CadastroFuncionariosDass.pas</Transaction>
-  </Transactions>  <ProjectSortOrder AutoSort="0" SortType="0">
+    <Transaction>2026/05/06 23:00:58.000.825,C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas=C:\Projetos\Projeto Cadastro Funcionarios Dass\Un00001FormCadastroFuncionariosDass.pas</Transaction>
+    <Transaction>2026/05/06 23:00:58.000.825,C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.dfm=C:\Projetos\Projeto Cadastro Funcionarios Dass\Un00001FormCadastroFuncionariosDass.dfm</Transaction>
+    <Transaction>2026/05/06 23:02:05.000.335,C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\ProjetoCadastroFuncionariosDass.dproj</Transaction>
+    <Transaction>2026/05/06 23:08:44.000.774,C:\Users\aliss\OneDrive\Documentos\Embarcadero\Studio\Projects\ProjetoCadastroFuncionariosDass.dproj=C:\Projetos\Projeto Cadastro Funcionarios Dass\ProjetoCadastroFuncionariosDass.dproj</Transaction>
+    <Transaction>2026/05/07 00:06:52.000.921,=C:\Projetos\Projeto Cadastro Funcionarios Dass\Unit1.pas</Transaction>
+    <Transaction>2026/05/07 00:07:25.000.925,C:\Projetos\Projeto Cadastro Funcionarios Dass\Unit1.dfm=C:\Projetos\Projeto Cadastro Funcionarios Dass\Dm00001CadastroFuncionariosDass.dfm</Transaction>
+    <Transaction>2026/05/07 00:07:25.000.925,C:\Projetos\Projeto Cadastro Funcionarios Dass\Unit1.pas=C:\Projetos\Projeto Cadastro Funcionarios Dass\Dm00001CadastroFuncionariosDass.pas</Transaction>
+    <Transaction>2026/05/07 00:33:44.000.088,C:\Projetos\Projeto Cadastro Funcionarios Dass\Dm00001CadastroFuncionariosDass.dfm=C:\Projetos\Projeto Cadastro Funcionarios Dass\Un00001DmCadastroFuncionariosDass.dfm</Transaction>
+    <Transaction>2026/05/07 00:33:44.000.088,C:\Projetos\Projeto Cadastro Funcionarios Dass\Dm00001CadastroFuncionariosDass.pas=C:\Projetos\Projeto Cadastro Funcionarios Dass\Un00001DmCadastroFuncionariosDass.pas</Transaction>
+    <Transaction>2026/05/10 17:26:48.307,=C:\Projetos\Projeto Cadastro Funcionarios Dass\Unit1.pas</Transaction>
+    <Transaction>2026/05/10 17:27:31.327,C:\Projetos\Projeto Cadastro Funcionarios Dass\UnCadastroFuncionariosTypes.pas=C:\Projetos\Projeto Cadastro Funcionarios Dass\Unit1.pas</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="0" SortType="0">
     <File Path="Un00001DmCadastroFuncionariosDass.pas"/>
     <File Path="Un00001DmCadastroFuncionariosDass.dfm"/>
     <File Path="Un00001FormCadastroFuncionariosDass.pas"/>
     <File Path="Un00001FormCadastroFuncionariosDass.dfm"/>
+    <File Path="UnCadastroFuncionariosTypes.pas"/>
   </ProjectSortOrder>
 </BorlandProject>

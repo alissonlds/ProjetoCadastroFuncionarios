@@ -10,6 +10,7 @@ object Dm00001CadastroFuncionariosDass: TDm00001CadastroFuncionariosDass
       'Protocol=TCPIP'
       'Server=localhost'
       'DriverID=FB')
+    Connected = True
     Left = 88
     Top = 32
   end
@@ -20,15 +21,11 @@ object Dm00001CadastroFuncionariosDass: TDm00001CadastroFuncionariosDass
     Left = 184
     Top = 32
   end
-  object FdTabelaFuncionarios: TFDTable
-    IndexFieldNames = 'ID'
+  object FdTabelaFuncionarios: TFDQuery
     Connection = FdConexaoProjeto
-    ResourceOptions.AssignedValues = [rvEscapeExpand]
-    UpdateOptions.AssignedValues = [uvGeneratorName]
-    UpdateOptions.GeneratorName = 'GEN_FUNCIONARIOS_ID'
-    UpdateOptions.AutoIncFields = 'ID'
-    TableName = 'FUNCIONARIOS'
-    Left = 88
+    SQL.Strings = (
+      'SELECT * FROM FUNCIONARIOS')
+    Left = 80
     Top = 96
     object FdTabelaFuncionariosID: TIntegerField
       FieldName = 'ID'
@@ -46,6 +43,7 @@ object Dm00001CadastroFuncionariosDass: TDm00001CadastroFuncionariosDass
       FieldName = 'CPF'
       Origin = 'CPF'
       Required = True
+      OnGetText = FdTabelaFuncionariosCPFGetText
       Size = 11
     end
     object FdTabelaFuncionariosEMAIL: TStringField

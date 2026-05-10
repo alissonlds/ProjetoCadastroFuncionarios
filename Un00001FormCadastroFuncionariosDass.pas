@@ -27,14 +27,17 @@ type
     LblEmail: TLabel;
     EdtEmail: TEdit;
     EdtCpf: TMaskEdit;
+    TpPainelCadastro: TPanel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure GenericExit(Sender: TObject);
+    procedure TbBotaoPesquisarClick(Sender: TObject);
 
   private
     { Private declarations }
     procedure ValidarCampos(AControl: TControl = nil);
+    Procedure ExecutarConsulta;
   public
     { Public declarations }
 
@@ -47,13 +50,31 @@ implementation
 
 {$R *.dfm}
 
-uses Un00001DmCadastroFuncionariosDass;
+uses Un00001DmCadastroFuncionariosDass, UnCadastroFuncionariosTypes;
 
 // Validará apenas o campo que o usuário acaba de sair.
 procedure TFormCadastroFuncionariosDass.GenericExit(Sender: TObject);
 begin
   if (Sender is TControl) then
     ValidarCampos(TControl(Sender));
+end;
+
+procedure TFormCadastroFuncionariosDass.TbBotaoPesquisarClick(Sender: TObject);
+begin
+  ExecutarConsulta;
+end;
+
+procedure TFormCadastroFuncionariosDass.ExecutarConsulta;
+Var
+  LFiltrosFuncionarios: TFiltrosFuncionario;
+begin
+  LFiltrosFuncionarios := Default (TFiltrosFuncionario);
+  LFiltrosFuncionarios.Nome := edtNome.Text;
+  LFiltrosFuncionarios.Cpf := Dm00001CadastroFuncionariosDass.BuscouSomenteNumeros(EdtCpf.Text);
+  LFiltrosFuncionarios.Email := EdtEmail.Text;
+  LFiltrosFuncionarios.TamCamiseta := TcbTamanhoCamisa.Text;
+  LFiltrosFuncionarios.TamCalcado := StrToIntDef(EdtTamCalcado.Text, 0);
+  Dm00001CadastroFuncionariosDass.ConsultarFuncionarios(LFiltrosFuncionarios);
 end;
 
 procedure TFormCadastroFuncionariosDass.FormCreate(Sender: TObject);
@@ -94,8 +115,8 @@ begin
 
   if (AControl = nil) or (AControl = edtNome) then
   begin
-    IF not Dm00001CadastroFuncionariosDass.ValidouNome(edtNome.Text) Then
-      edtNome.SetFocus;
+    // IF not Dm00001CadastroFuncionariosDass.ValidouNome(edtNome.Text) Then
+    // edtNome.SetFocus;
   end;
 
   if (AControl = nil) or (AControl = EdtCpf) then
@@ -112,16 +133,16 @@ begin
 
   if (AControl = nil) or (AControl = TcbTamanhoCamisa) then
   begin
-    if NOt Dm00001CadastroFuncionariosDass.ValidouTamanhoCamisa
-      (TcbTamanhoCamisa.Text) then
-      TcbTamanhoCamisa.SetFocus;
+    // if NOt Dm00001CadastroFuncionariosDass.ValidouTamanhoCamisa
+    // (TcbTamanhoCamisa.Text) then
+    // TcbTamanhoCamisa.SetFocus;
   end;
 
   if (AControl = nil) or (AControl = EdtTamCalcado) then
   begin
-    if NOt Dm00001CadastroFuncionariosDass.ValidouTamanhoCalcado
-      (StrToIntDef(EdtTamCalcado.Text, 0)) Then
-      EdtTamCalcado.SetFocus;
+    // if NOt Dm00001CadastroFuncionariosDass.ValidouTamanhoCalcado
+    // (StrToIntDef(EdtTamCalcado.Text, 0)) Then
+    // EdtTamCalcado.SetFocus;
   end;
 end;
 
