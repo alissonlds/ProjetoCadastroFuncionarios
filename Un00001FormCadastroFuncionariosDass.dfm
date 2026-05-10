@@ -10,7 +10,9 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
+  KeyPreview = True
   OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
   OnShow = FormShow
   TextHeight = 15
   object TPPaginaControle: TPageControl
@@ -44,6 +46,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
         Height = 145
         Align = alTop
         TabOrder = 1
+        ExplicitTop = -6
         object LblNome: TLabel
           Left = 96
           Top = 7
@@ -64,7 +67,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
         end
         object LblTamCamisa: TLabel
           Left = 13
-          Top = 88
+          Top = 92
           Width = 119
           Height = 15
           Caption = 'Tamanho de camiseta:'
@@ -73,7 +76,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
         end
         object LblTamCalcado: TLabel
           Left = 19
-          Top = 117
+          Top = 121
           Width = 113
           Height = 15
           Caption = 'Tamanho de cal'#231'ado:'
@@ -82,7 +85,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
         end
         object LblEmail: TLabel
           Left = 95
-          Top = 61
+          Top = 63
           Width = 37
           Height = 15
           Caption = 'E-mail:'
@@ -91,10 +94,11 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
         end
         object edtNome: TEdit
           Left = 138
-          Top = 4
+          Top = 2
           Width = 314
-          Height = 21
+          Height = 23
           TabOrder = 0
+          OnExit = GenericExit
         end
         object TbBotaoPesquisar: TButton
           Left = 479
@@ -102,16 +106,16 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
           Width = 111
           Height = 43
           Caption = 'Pesquisar'
-          TabOrder = 4
+          TabOrder = 5
         end
         object TcbTamanhoCamisa: TComboBox
-          Left = 137
-          Top = 85
+          Left = 138
+          Top = 89
           Width = 45
           Height = 23
-          ItemIndex = 0
-          TabOrder = 2
-          Text = 'PP'
+          Style = csDropDownList
+          TabOrder = 3
+          OnExit = GenericExit
           Items.Strings = (
             'PP'
             'P'
@@ -121,27 +125,33 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
             'XG'
             '')
         end
-        object EdtCpf: TEdit
-          Left = 137
-          Top = 31
-          Width = 314
-          Height = 21
-          TabOrder = 1
-        end
         object EdtTamCalcado: TEdit
-          Left = 137
-          Top = 114
+          Left = 138
+          Top = 118
           Width = 45
-          Height = 21
+          Height = 23
           NumbersOnly = True
-          TabOrder = 3
+          TabOrder = 4
+          OnExit = GenericExit
         end
         object EdtEmail: TEdit
-          Left = 137
-          Top = 58
+          Left = 138
+          Top = 60
           Width = 314
-          Height = 21
-          TabOrder = 5
+          Height = 23
+          TabOrder = 2
+          OnExit = GenericExit
+        end
+        object EdtCpf: TMaskEdit
+          Left = 138
+          Top = 31
+          Width = 120
+          Height = 23
+          EditMask = '999.999.999-99;1;_'
+          MaxLength = 14
+          TabOrder = 1
+          Text = '   .   .   -  '
+          OnExit = GenericExit
         end
       end
     end

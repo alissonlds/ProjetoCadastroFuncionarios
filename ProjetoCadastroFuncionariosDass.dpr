@@ -3,7 +3,7 @@ program ProjetoCadastroFuncionariosDass;
 uses
   Vcl.Forms,
   Un00001FormCadastroFuncionariosDass in 'Un00001FormCadastroFuncionariosDass.pas' {FormCadastroFuncionariosDass},
-  Dm00001CadastroFuncionariosDass in 'Dm00001CadastroFuncionariosDass.pas' {DataModule1: TDataModule};
+  Un00001DmCadastroFuncionariosDass in 'Un00001DmCadastroFuncionariosDass.pas' {Dm00001CadastroFuncionariosDass: TDataModule};
 
 {$R *.res}
 
@@ -11,6 +11,6 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TFormCadastroFuncionariosDass, FormCadastroFuncionariosDass);
-  Application.CreateForm(TDataModule1, DataModule1);
+  Application.CreateForm(TDm00001CadastroFuncionariosDass, Dm00001CadastroFuncionariosDass);
   Application.Run;
 end.

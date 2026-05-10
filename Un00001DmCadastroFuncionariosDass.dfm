@@ -10,7 +10,6 @@ object Dm00001CadastroFuncionariosDass: TDm00001CadastroFuncionariosDass
       'Protocol=TCPIP'
       'Server=localhost'
       'DriverID=FB')
-    Connected = True
     Left = 88
     Top = 32
   end
