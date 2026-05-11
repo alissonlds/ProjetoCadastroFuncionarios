@@ -128,7 +128,7 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Un00001DmCadastroFuncionariosDass.pas">
-            <Form>Dm00001CadastroFuncionariosDass</Form>
+            <Form>DmCadastroFuncionariosDass</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>

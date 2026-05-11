@@ -7,7 +7,7 @@ uses
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.ComCtrls, Vcl.Grids,
   Vcl.DBGrids, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Mask, Vcl.Buttons,
-  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList;
+  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, Vcl.DBCtrls;
 
 type
   TFormCadastroFuncionariosDass = class(TForm)
@@ -42,6 +42,19 @@ type
     ActCancelar: TAction;
     ActExcluir: TAction;
     ActSalvar: TAction;
+    LblNomeDb: TLabel;
+    LblCpfDb: TLabel;
+    LblEmailDb: TLabel;
+    LblTamCamisaDb: TLabel;
+    LblTamCalcadoDb: TLabel;
+    TdbTamCalcado: TDBEdit;
+    TdbTamanhoCamisa: TDBComboBox;
+    TdbEmail: TDBEdit;
+    TdbCpf: TDBEdit;
+    TdbNome: TDBEdit;
+    TgDadosPessoais: TGroupBox;
+    GbMedidasUniforme: TGroupBox;
+    GbFiltrosPesquisa: TGroupBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -52,6 +65,14 @@ type
     procedure ActEditarExecute(Sender: TObject);
     procedure ActCancelarExecute(Sender: TObject);
     procedure ActExcluirExecute(Sender: TObject);
+    procedure ActSalvarExecute(Sender: TObject);
+    procedure TdbTamCalcadoKeyPress(Sender: TObject; var Key: Char);
+    procedure DbGridFuncionariosDblClick(Sender: TObject);
+    procedure TdbTamCalcadoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DbGridFuncionariosDrawColumnCell(Sender: TObject;
+      const Rect: TRect; DataCol: Integer; Column: TColumn;
+      State: TGridDrawState);
 
   private
     { Private declarations }
@@ -78,104 +99,197 @@ begin
   if (Sender is TControl) then
     ValidarCampos(TControl(Sender));
 end;
-
-procedure TFormCadastroFuncionariosDass.ActCancelarExecute(Sender: TObject);
+//Chamar salvar no último campo.
+procedure TFormCadastroFuncionariosDass.TdbTamCalcadoKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
 begin
-  Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.Cancel;
-  TPPaginaControle.ActivePage := TsAbaListagem;
-end;
-
-procedure TFormCadastroFuncionariosDass.ActEditarExecute(Sender: TObject);
-begin
-  if not Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.IsEmpty then
+  if Key = VK_RETURN then
   begin
-    Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.Edit;
-    // Libera edição do registro selecionado
-    TPPaginaControle.ActivePage := TsAbaCadastro; // Vai para aba de cadastro
-    // dbeNome.SetFocus;
+    Key := 0;
+    BtnSalvar.Click;
+  end;
+end;
+//Forçar dataset a entrar em edição.
+procedure TFormCadastroFuncionariosDass.TdbTamCalcadoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  if DmCadastroFuncionariosDass.FdTabelaFuncionarios.State = dsBrowse then
+    DmCadastroFuncionariosDass.FdTabelaFuncionarios.Edit;
+
+  if not CharInSet(Key, ['0' .. '9', #8, #13]) then
+  begin
+    Key := #0;
+    Beep;
   end;
 end;
 
+// Ação cancelar inserção/edição.
+procedure TFormCadastroFuncionariosDass.ActCancelarExecute(Sender: TObject);
+begin
+  DmCadastroFuncionariosDass.FdTabelaFuncionarios.Cancel;
+  TPPaginaControle.ActivePage := TsAbaListagem;
+  DbGridFuncionarios.SetFocus;
+
+end;
+
+// Ação editar registro.
+procedure TFormCadastroFuncionariosDass.ActEditarExecute(Sender: TObject);
+begin
+  if not DmCadastroFuncionariosDass.FdTabelaFuncionarios.IsEmpty then
+  begin
+    TPPaginaControle.ActivePage := TsAbaCadastro;
+    DmCadastroFuncionariosDass.FdTabelaFuncionarios.Edit;
+    if TdbNome.CanFocus then
+      TdbNome.SetFocus;
+  end;
+end;
+
+// Ação excluir registro.
 procedure TFormCadastroFuncionariosDass.ActExcluirExecute(Sender: TObject);
 begin
 
-  if Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.IsEmpty then
+  if DmCadastroFuncionariosDass.FdTabelaFuncionarios.IsEmpty then
     Exit;
 
   if Application.MessageBox('Deseja realmente excluir?', 'Confirmação',
     MB_YESNO + MB_ICONQUESTION) = IDYES then
   begin
-    Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.Delete;
-    Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.ApplyUpdates(0);
+    DmCadastroFuncionariosDass.FdTabelaFuncionarios.Delete;
+    DmCadastroFuncionariosDass.FdTabelaFuncionarios.ApplyUpdates(0);
   end;
 end;
 
+// Ação novo registro.
 procedure TFormCadastroFuncionariosDass.ActNovoExecute(Sender: TObject);
 begin
 
-  IF Not Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.Active then
-    Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.Open;
+  IF Not DmCadastroFuncionariosDass.FdTabelaFuncionarios.Active then
+    DmCadastroFuncionariosDass.FdTabelaFuncionarios.Open;
 
-  Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.Append;
-  TPPaginaControle.ActivePage := TsAbaCadastro; // Muda para a aba de Cadastro
-  // edtNome.SetFocus; // Põe o foco no primeiro campo
-  AtualizarBotoes;
+  IF TPPaginaControle.ActivePage = TsAbaListagem then
+    TPPaginaControle.ActivePage := TsAbaCadastro;
+
+  if not(DmCadastroFuncionariosDass.FdTabelaFuncionarios.State in [dsInsert,
+    dsEdit]) then
+    DmCadastroFuncionariosDass.FdTabelaFuncionarios.Append;
+
+  if TdbNome.CanFocus then
+    TdbNome.SetFocus;
 end;
 
+// Ação salvar registro.
+procedure TFormCadastroFuncionariosDass.ActSalvarExecute(Sender: TObject);
+begin
+  try
+    IF Not DmCadastroFuncionariosDass.FdTabelaFuncionarios.Active then
+    begin
+      Application.MessageBox('Não há dados para serem salvos.', 'Confirmação',
+        MB_OK + MB_ICONWARNING);
+      Exit;
+    end;
+
+    IF DmCadastroFuncionariosDass.FdTabelaFuncionarios.State = dsBrowse then
+    Begin
+      Application.MessageBox('Nenhum registro sendo inserido ou editado.',
+        'Confirmação', MB_OK + MB_ICONWARNING);
+      Exit;
+    End;
+
+    DmCadastroFuncionariosDass.FdTabelaFuncionarios.Post;
+    DmCadastroFuncionariosDass.FdTabelaFuncionarios.ApplyUpdates(0);
+
+    Application.MessageBox('O cadastro foi atualizado com sucesso.',
+      'Confirmação', MB_OK + MB_ICONINFORMATION);
+    TPPaginaControle.ActivePage := TsAbaListagem;
+
+  except
+    on E: Exception do
+      Application.MessageBox(PChar('Erro ao gravar: ' + E.Message),
+        'Erro do Sistema', MB_OK + MB_ICONERROR);
+  end;
+end;
+
+// Método que valida os estados dos botões.
 procedure TFormCadastroFuncionariosDass.AtualizarBotoes;
 var
   EmEdicao: Boolean;
 
 begin
-
-  EmEdicao := Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.State
+  EmEdicao := DmCadastroFuncionariosDass.FdTabelaFuncionarios.State
     in [dsInsert, dsEdit];
 
   BtnNovo.Enabled := not EmEdicao;
   BtnEditar.Enabled := (not EmEdicao) and
-    (not Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.IsEmpty);
+    (not DmCadastroFuncionariosDass.FdTabelaFuncionarios.IsEmpty);
   BtnExcluir.Enabled := (not EmEdicao) and
-    (not Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.IsEmpty);
+    (not DmCadastroFuncionariosDass.FdTabelaFuncionarios.IsEmpty);
 
   BtnSalvar.Enabled := EmEdicao;
   BtnCancelar.Enabled := EmEdicao;
 
-  // Extra: Bloquear as abas para o usuário não fugir sem salvar
-  // Isso desabilita a troca de abas enquanto estiver editando
-  // TabListagem.TabVisible := not EmEdicao;
+  TsAbaListagem.TabVisible := not EmEdicao;
 end;
 
+// Botão pesquisar.
 procedure TFormCadastroFuncionariosDass.BtnPesquisarClick(Sender: TObject);
 begin
+  ValidarCampos(Nil);
   ExecutarConsulta;
 end;
 
+// Redirecionar para aba de cadastro.
+procedure TFormCadastroFuncionariosDass.DbGridFuncionariosDblClick
+  (Sender: TObject);
+begin
+  if not DmCadastroFuncionariosDass.FdTabelaFuncionarios.IsEmpty then
+  begin
+    DmCadastroFuncionariosDass.FdTabelaFuncionarios.Edit;
+    TPPaginaControle.ActivePage := TsAbaCadastro;
+    TdbNome.SetFocus;
+  end;
+end;
+
+// Marcar toda linha da grade em azul.
+procedure TFormCadastroFuncionariosDass.DbGridFuncionariosDrawColumnCell
+  (Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+begin
+  if gdSelected in State then
+  begin
+    DbGridFuncionarios.Canvas.Brush.Color := clHighlight;
+    DbGridFuncionarios.Canvas.Font.Color := clHighlightText;
+  end;
+  DbGridFuncionarios.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+end;
+
+// Atualizar botões ao navegar pelo pacote.
 procedure TFormCadastroFuncionariosDass.DsFuncionariosStateChange
   (Sender: TObject);
 begin
   AtualizarBotoes;
 end;
 
+// Atribuir parâmetros e chamar médodo de consulta da grade.
 procedure TFormCadastroFuncionariosDass.ExecutarConsulta;
 Var
   LFiltrosFuncionarios: TFiltrosFuncionario;
 begin
   LFiltrosFuncionarios := Default (TFiltrosFuncionario);
   LFiltrosFuncionarios.Nome := edtNome.Text;
-  LFiltrosFuncionarios.Cpf := Dm00001CadastroFuncionariosDass.
-    BuscouSomenteNumeros(EdtCpf.Text);
+  LFiltrosFuncionarios.Cpf := DmCadastroFuncionariosDass.BuscouSomenteNumeros
+    (EdtCpf.Text);
   LFiltrosFuncionarios.Email := EdtEmail.Text;
   LFiltrosFuncionarios.TamCamiseta := TcbTamanhoCamisa.Text;
   LFiltrosFuncionarios.TamCalcado := StrToIntDef(EdtTamCalcado.Text, 0);
-  Dm00001CadastroFuncionariosDass.ConsultarFuncionarios(LFiltrosFuncionarios);
+  DmCadastroFuncionariosDass.ConsultarFuncionarios(LFiltrosFuncionarios);
 end;
 
+// Setar o dataset do datamodule.
 procedure TFormCadastroFuncionariosDass.FormCreate(Sender: TObject);
 begin
-  if Assigned(Dm00001CadastroFuncionariosDass) then
+  if Assigned(DmCadastroFuncionariosDass) then
   begin
-    DsFuncionarios.DataSet := Dm00001CadastroFuncionariosDass.
-      FdTabelaFuncionarios;
+    DsFuncionarios.DataSet := DmCadastroFuncionariosDass.FdTabelaFuncionarios;
   end;
 end;
 
@@ -186,8 +300,13 @@ begin
   case Key of
     VK_RETURN, VK_DOWN:
       begin
+
+        if ActiveControl = TdbTamCalcado then
+          Exit;
+
         SelectNext(ActiveControl, True, True);
         Key := 0;
+
       end;
     VK_UP:
       begin
@@ -197,45 +316,118 @@ begin
   end;
 end;
 
+// Forçar foco e atualizar estado dos botões na abertura.
 procedure TFormCadastroFuncionariosDass.FormShow(Sender: TObject);
 begin
   edtNome.SetFocus;
+  AtualizarBotoes;
 end;
 
-// Método validador dos campos
+// Método validador dos campos.
+// Campos que são DBWARE não permitir vazio.
 procedure TFormCadastroFuncionariosDass.ValidarCampos(AControl: TControl);
 begin
+  IF DsFuncionarios.State in [dsEdit, dsInsert] then
+  Begin
 
-  if (AControl = nil) or (AControl = edtNome) then
-  begin
-    // IF not Dm00001CadastroFuncionariosDass.ValidouNome(edtNome.Text) Then
-    // edtNome.SetFocus;
-  end;
+    if (AControl = nil) or (AControl = TdbNome) then
+    begin
+      IF not DmCadastroFuncionariosDass.ValidouCampoVazio(TdbNome.Text) Then
+      Begin
+        Application.MessageBox('O Nome é obrigatório.', 'Validação',
+          MB_OK + MB_ICONEXCLAMATION);
+        TdbNome.SetFocus;
+      End;
+    End;
 
+    if (AControl = nil) or (AControl = TdbCpf) then
+    begin
+
+      IF not DmCadastroFuncionariosDass.ValidouCampoVazio(TdbCpf.Text) Then
+      Begin
+        Application.MessageBox('O CPF é obrigatório.', 'Validação',
+          MB_OK + MB_ICONEXCLAMATION);
+        TdbCpf.SetFocus;
+        Abort;
+      End;
+      IF not DmCadastroFuncionariosDass.ValidouCPF(TdbCpf.Field.AsString) then
+      Begin
+        TdbCpf.SetFocus;
+        Abort;
+      End;
+
+    end;
+
+    if (AControl = nil) or (AControl = TdbEmail) then
+    begin
+      IF not DmCadastroFuncionariosDass.ValidouCampoVazio(TdbEmail.Text) Then
+      BEgin
+        Application.MessageBox('O E-mail é obrigatório.', 'Validação',
+          MB_OK + MB_ICONEXCLAMATION);
+        TdbEmail.SetFocus;
+        Abort;
+      end;
+      if not DmCadastroFuncionariosDass.ValidouEmail(TdbEmail.Text) then
+      Begin
+        TdbEmail.SetFocus;
+        Abort;
+      End;
+    end;
+
+    if (AControl = nil) or (AControl = TdbTamanhoCamisa) then
+    begin
+      IF not DmCadastroFuncionariosDass.ValidouCampoVazio
+        (TdbTamanhoCamisa.Text) Then
+      Begin
+        Application.MessageBox('O Tamanho de Camiseta é obrigatório.',
+          'Validação', MB_OK + MB_ICONEXCLAMATION);
+        TdbTamanhoCamisa.SetFocus;
+        Abort;
+      end;
+
+      if NOt DmCadastroFuncionariosDass.ValidouTamanhoCamisa
+        (TdbTamanhoCamisa.Text) then
+      Begin
+        TdbTamanhoCamisa.SetFocus;
+        Abort;
+      End;
+    end;
+
+    if (AControl = nil) or (AControl = TdbTamCalcado) then
+    begin
+      IF not DmCadastroFuncionariosDass.ValidouCampoVazio
+        (TdbTamCalcado.Text) Then
+      Begin
+        Application.MessageBox('O Tamanho de calçado é obrigatório.',
+          'Validação', MB_OK + MB_ICONEXCLAMATION);
+        TdbTamCalcado.SetFocus;
+        Abort;
+      end;
+      if NOt DmCadastroFuncionariosDass.ValidouTamanhoCalcado
+        (StrToIntDef(TdbTamCalcado.Text, 0)) Then
+      Begin
+        TdbTamCalcado.SetFocus;
+        Abort;
+      End;
+    end;
+  End;
+  // Campos de pesquisa, exigir formatação do CPF e E-mail.
   if (AControl = nil) or (AControl = EdtCpf) then
   begin
-    if not Dm00001CadastroFuncionariosDass.ValidouCPF(EdtCpf.Text) then
-      EdtCpf.SetFocus;
+    IF DmCadastroFuncionariosDass.ValidouCampoVazio(EdtCpf.Text) Then
+    Begin
+      if not DmCadastroFuncionariosDass.ValidouCPF(EdtCpf.Text) then
+      Begin
+        EdtCpf.SetFocus;
+        Abort;
+      End;
+    End;
   end;
 
   if (AControl = nil) or (AControl = EdtEmail) then
   begin
-    if not Dm00001CadastroFuncionariosDass.ValidouEmail(EdtEmail.Text) then
+    if not DmCadastroFuncionariosDass.ValidouEmail(EdtEmail.Text) then
       EdtEmail.SetFocus;
-  end;
-
-  if (AControl = nil) or (AControl = TcbTamanhoCamisa) then
-  begin
-    // if NOt Dm00001CadastroFuncionariosDass.ValidouTamanhoCamisa
-    // (TcbTamanhoCamisa.Text) then
-    // TcbTamanhoCamisa.SetFocus;
-  end;
-
-  if (AControl = nil) or (AControl = EdtTamCalcado) then
-  begin
-    // if NOt Dm00001CadastroFuncionariosDass.ValidouTamanhoCalcado
-    // (StrToIntDef(EdtTamCalcado.Text, 0)) Then
-    // EdtTamCalcado.SetFocus;
   end;
 end;
 

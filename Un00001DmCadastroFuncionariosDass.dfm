@@ -1,4 +1,4 @@
-object Dm00001CadastroFuncionariosDass: TDm00001CadastroFuncionariosDass
+object DmCadastroFuncionariosDass: TDmCadastroFuncionariosDass
   OnCreate = DataModuleCreate
   Height = 480
   Width = 640
@@ -22,6 +22,8 @@ object Dm00001CadastroFuncionariosDass: TDm00001CadastroFuncionariosDass
     Top = 32
   end
   object FdTabelaFuncionarios: TFDQuery
+    BeforePost = FdTabelaFuncionariosBeforePost
+    CachedUpdates = True
     Connection = FdConexaoProjeto
     SQL.Strings = (
       'SELECT * FROM FUNCIONARIOS')
@@ -44,6 +46,7 @@ object Dm00001CadastroFuncionariosDass: TDm00001CadastroFuncionariosDass
       Origin = 'CPF'
       Required = True
       OnGetText = FdTabelaFuncionariosCPFGetText
+      EditMask = '999.999.999-99;0;'
       Size = 11
     end
     object FdTabelaFuncionariosEMAIL: TStringField

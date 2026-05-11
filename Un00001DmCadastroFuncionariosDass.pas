@@ -11,7 +11,7 @@ uses
   FireDAC.DApt, FireDAC.Comp.DataSet, UnCadastroFuncionariosTypes;
 
 type
-  TDm00001CadastroFuncionariosDass = class(TDataModule)
+  TDmCadastroFuncionariosDass = class(TDataModule)
     FdConexaoProjeto: TFDConnection;
     FdLink: TFDPhysFBDriverLink;
     FdTabelaFuncionarios: TFDQuery;
@@ -24,6 +24,7 @@ type
     procedure DataModuleCreate(Sender: TObject);
     procedure FdTabelaFuncionariosCPFGetText(Sender: TField; var Text: string;
       DisplayText: Boolean);
+    procedure FdTabelaFuncionariosBeforePost(DataSet: TDataSet);
 
   private
     { Private declarations }
@@ -41,7 +42,7 @@ type
   end;
 
 var
-  Dm00001CadastroFuncionariosDass: TDm00001CadastroFuncionariosDass;
+  DmCadastroFuncionariosDass: TDmCadastroFuncionariosDass;
 
 implementation
 
@@ -50,8 +51,8 @@ Uses
   System.Math, System.StrUtils, System.Character;
 
 {$R *.dfm}
-
-function TDm00001CadastroFuncionariosDass.BuscouSomenteNumeros
+//Limpar String e manter somente números.
+function TDmCadastroFuncionariosDass.BuscouSomenteNumeros
   (const AValue: string): string;
 var
   LCaractere: Char;
@@ -63,8 +64,8 @@ begin
       Result := Result + LCaractere;
   end;
 end;
-
-procedure TDm00001CadastroFuncionariosDass.ConsultarFuncionarios
+//Método de consulta de dados.
+procedure TDmCadastroFuncionariosDass.ConsultarFuncionarios
   (AFiltro: TFiltrosFuncionario);
 begin
 
@@ -90,12 +91,13 @@ begin
         MB_OK + MB_ICONEXCLAMATION);
   except
     on E: Exception do
-      raise Exception.Create('Erro na consulta: ' + E.Message);
+      Application.MessageBox(PChar('Erro na consulta: ' + E.Message),
+        'Erro do Sistema', MB_OK + MB_ICONERROR);
   end;
 
 end;
-
-procedure TDm00001CadastroFuncionariosDass.DataModuleCreate(Sender: TObject);
+//Criar conexão.
+procedure TDmCadastroFuncionariosDass.DataModuleCreate(Sender: TObject);
 begin
   Try
     if not FdConexaoProjeto.Connected then
@@ -104,104 +106,111 @@ begin
     FdTabelaFuncionarios.Close;
   except
     on E: Exception do
-      raise Exception.Create('Erro ao conectar ao banco de dados: ' +
-        E.Message);
+      Application.MessageBox(PChar('Erro ao conectar ao banco de dados: ' +
+        E.Message), 'Erro do Sistema', MB_OK + MB_ICONERROR);
   end;
 end;
-
-procedure TDm00001CadastroFuncionariosDass.FdTabelaFuncionariosCPFGetText
+//Gravar caixa alta o nome.
+procedure TDmCadastroFuncionariosDass.FdTabelaFuncionariosBeforePost
+  (DataSet: TDataSet);
+begin
+  DataSet.FieldByName('NOME').AsString :=
+    UpperCase(DataSet.FieldByName('NOME').AsString);
+end;
+//Formatar CPF.
+procedure TDmCadastroFuncionariosDass.FdTabelaFuncionariosCPFGetText
   (Sender: TField; var Text: string; DisplayText: Boolean);
 begin
-  if (not Sender.IsNull) and (Length(Sender.AsString) = 11) then
+
+  if Sender.IsNull then
+  begin
+    Text := '';
+    Exit;
+  end;
+
+  if DisplayText then
   begin
     Text := Copy(Sender.AsString, 1, 3) + '.' + Copy(Sender.AsString, 4, 3) +
       '.' + Copy(Sender.AsString, 7, 3) + '-' + Copy(Sender.AsString, 10, 2);
   end
   else
+  begin
     Text := Sender.AsString;
-end;
-
-function TDm00001CadastroFuncionariosDass.ValidouCampoVazio
+  end;
+End;
+//Validar campos vazios.
+function TDmCadastroFuncionariosDass.ValidouCampoVazio
   (const Avalor: String): Boolean;
+Var
+  LTexto: String;
 begin
-  Result := Trim(Avalor) <> Emptystr;
+  LTexto := StringReplace(Avalor, '.', '', [rfReplaceAll]);
+  LTexto := StringReplace(LTexto, '-', '', [rfReplaceAll]);
+  LTexto := StringReplace(LTexto, '_', '', [rfReplaceAll]);
+  LTexto := Trim(LTexto);
+  Result := Trim(LTexto) <> Emptystr;
 end;
-
-function TDm00001CadastroFuncionariosDass.ValidouCPF
-  (const ACPF: string): Boolean;
+//Validador de CPF.
+Function TDmCadastroFuncionariosDass.ValidouCPF(const ACPF: string): Boolean;
 var
-  sLimpo: string;
-  d1, d2, i, erro: Integer;
-  n1, n2, n3, n4, n5, n6, n7, n8, n9: Integer;
+  LCnpjCpf: string;
+  I, LSoma, LDigito1, LDigito2: Integer;
 begin
-
   Result := True;
-  sLimpo := Emptystr;
-  for i := 1 to Length(ACPF) do
-    if CharInSet(ACPF[i], ['0' .. '9']) then
-      sLimpo := sLimpo + ACPF[i];
+  LCnpjCpf := '';
 
-  // IF (sLimpo = '') then
-  // Begin
-  // Application.MessageBox('O CPF é obrigatório.', 'Validação',
-  // MB_OK + MB_ICONERROR);
-  // Result := False;
-  // Exit;
-  // End;
+  // 1. Limpeza rigorosa: garante que só números entrem na conta
+  for I := 1 to Length(ACPF) do
+    if CharInSet(ACPF[I], ['0' .. '9']) then
+      LCnpjCpf := LCnpjCpf + ACPF[I];
 
-  // Verifica tamanho e sequências repetidas óbvias
-  if ((Length(sLimpo) <> 11) AND (sLimpo <> Emptystr)) or
-    (sLimpo = '00000000000') or (sLimpo = '11111111111') then
+  // 2. Verificação de consistência
+  if Length(LCnpjCpf) <> 11 then
+    Result := False;
+  if (LCnpjCpf = '00000000000') or (LCnpjCpf = '11111111111') then
     Result := False;
 
-  IF (Result) AND (sLimpo <> Emptystr) Then
-  Begin
-    // Cálculo do 1º dígito
-    n1 := StrToInt(sLimpo[1]);
-    n2 := StrToInt(sLimpo[2]);
-    n3 := StrToInt(sLimpo[3]);
-    n4 := StrToInt(sLimpo[4]);
-    n5 := StrToInt(sLimpo[5]);
-    n6 := StrToInt(sLimpo[6]);
-    n7 := StrToInt(sLimpo[7]);
-    n8 := StrToInt(sLimpo[8]);
-    n9 := StrToInt(sLimpo[9]);
+  try
+    IF Result then
+    Begin
+      LSoma := 0;
+      for I := 1 to 9 do
+        // Peso cresce (I+1) enquanto a posição do CPF decresce (10-I)
+        inc(LSoma, StrToInt(Copy(LCnpjCpf, 10 - I, 1)) * (I + 1));
 
-    d1 := 11 - ((n1 * 10 + n2 * 9 + n3 * 8 + n4 * 7 + n5 * 6 + n6 * 5 + n7 * 4 +
-      n8 * 3 + n9 * 2) mod 11);
-    if d1 >= 10 then
-      d1 := 0;
+      LDigito1 := 11 - (LSoma mod 11);
+      if LDigito1 > 9 then
+        LDigito1 := 0;
 
-    // Cálculo do 2º dígito
-    d2 := 11 - ((n1 * 11 + n2 * 10 + n3 * 9 + n4 * 8 + n5 * 7 + n6 * 6 + n7 * 5
-      + n8 * 4 + n9 * 3 + d1 * 2) mod 11);
-    if d2 >= 10 then
-      d2 := 0;
+      // 2° dígito
+      LSoma := 0;
+      for I := 1 to 10 do
+        // Aqui incluímos o 10º dígito (o primeiro que calculamos) na conta
+        inc(LSoma, StrToInt(Copy(LCnpjCpf, 11 - I, 1)) * (I + 1));
 
-    // Compara com os dígitos digitados
-    Result := (IntToStr(d1) = sLimpo[10]) and (IntToStr(d2) = sLimpo[11]);
-  End;
+      LDigito2 := 11 - (LSoma mod 11);
+      if LDigito2 > 9 then
+        LDigito2 := 0;
 
-  If Not Result Then
-    Application.MessageBox('O CPF é inválido.', 'Validação',
-      MB_OK + MB_ICONEXCLAMATION);
+      // Comparamos com as posições 10 e 11 do CPF original limpo
+      if (IntToStr(LDigito1) <> Copy(LCnpjCpf, 10, 1)) and
+        (IntToStr(LDigito2) <> Copy(LCnpjCpf, 11, 1)) then
+        Result := False;
+    End;
+  Finally
+    if not Result then
+      Application.MessageBox('O CPF informado é inválido.', 'Validação',
+        MB_OK + MB_ICONEXCLAMATION);
+  end;
 end;
-
-function TDm00001CadastroFuncionariosDass.ValidouEmail
-  (const AEmail: string): Boolean;
+//Validador e-mail.
+function TDmCadastroFuncionariosDass.ValidouEmail(const AEmail: string)
+  : Boolean;
 const
-  // Caracteres padrão para validar estrutura de e-mail (usuario@dominio.com...)
   CCaracteresEmail = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
 begin
   Result := True;
-  //
-  // IF AEmail = '' Then
-  // Begin
-  // Application.MessageBox('O e-mail é obrigatório.', 'Validação',
-  // MB_OK + MB_ICONERROR);
-  // Result := False;
-  // Exit;
-  // End;
+
   IF AEmail = Emptystr then
     Exit;
 
@@ -211,8 +220,8 @@ begin
     Application.MessageBox('O e-mail não é válido.', 'Validação',
       MB_OK + MB_ICONEXCLAMATION);
 end;
-
-function TDm00001CadastroFuncionariosDass.ValidouNome(Atexto: String): Boolean;
+//Validador Nome.
+function TDmCadastroFuncionariosDass.ValidouNome(Atexto: String): Boolean;
 begin
   Result := True;
   IF Not ValidouCampoVazio(Atexto) Then
@@ -222,8 +231,8 @@ begin
       MB_OK + MB_ICONEXCLAMATION);
   End;
 end;
-
-function TDm00001CadastroFuncionariosDass.ValidouTamanhoCalcado
+//Validador tamanho do calçado.
+function TDmCadastroFuncionariosDass.ValidouTamanhoCalcado
   (const ATam: Integer): Boolean;
 begin
   Result := True;
@@ -235,18 +244,17 @@ begin
       'Validação', MB_OK + MB_ICONEXCLAMATION);
   end;
 end;
-
-function TDm00001CadastroFuncionariosDass.ValidouTamanhoCamisa
+//Validador tamanho da camisa.
+function TDmCadastroFuncionariosDass.ValidouTamanhoCamisa
   (const ATam: string): Boolean;
 begin
   Result := True;
-  IF ATam = Emptystr Then
+  IF Not ValidouCampoVazio(ATam) Then
   Begin
     Result := False;
     Application.MessageBox('O tamanho de camisa é obrigatório.', 'Validação',
       MB_OK + MB_ICONEXCLAMATION);
   End;
-
 end;
 
 end.

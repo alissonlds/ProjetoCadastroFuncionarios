@@ -29,17 +29,20 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
       Caption = '1. Listagem funcion'#225'rios'
       object DbGridFuncionarios: TDBGrid
         Left = 0
-        Top = 145
+        Top = 185
         Width = 616
-        Height = 206
+        Height = 166
         Align = alClient
         DataSource = DsFuncionarios
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
         TabOrder = 0
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
         TitleFont.Height = -12
         TitleFont.Name = 'Segoe UI'
         TitleFont.Style = []
+        OnDrawColumnCell = DbGridFuncionariosDrawColumnCell
+        OnDblClick = DbGridFuncionariosDblClick
         Columns = <
           item
             Expanded = False
@@ -61,10 +64,11 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
             Title.Font.Height = -12
             Title.Font.Name = 'Segoe UI'
             Title.Font.Style = [fsBold]
-            Width = 200
+            Width = 199
             Visible = True
           end
           item
+            Alignment = taCenter
             Expanded = False
             FieldName = 'CPF'
             Font.Charset = DEFAULT_CHARSET
@@ -72,12 +76,13 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
             Font.Height = -12
             Font.Name = 'Segoe UI'
             Font.Style = []
+            Title.Alignment = taCenter
             Title.Font.Charset = DEFAULT_CHARSET
             Title.Font.Color = clWindowText
             Title.Font.Height = -12
             Title.Font.Name = 'Segoe UI'
             Title.Font.Style = [fsBold]
-            Width = 79
+            Width = 85
             Visible = True
           end
           item
@@ -94,10 +99,11 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
             Title.Font.Height = -12
             Title.Font.Name = 'Segoe UI'
             Title.Font.Style = [fsBold]
-            Width = 111
+            Width = 175
             Visible = True
           end
           item
+            Alignment = taCenter
             Expanded = False
             FieldName = 'TAMANHO_CAMISA'
             Font.Charset = DEFAULT_CHARSET
@@ -105,16 +111,18 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
             Font.Height = -12
             Font.Name = 'Segoe UI'
             Font.Style = []
-            Title.Caption = 'Tam. da camisa'
+            Title.Alignment = taCenter
+            Title.Caption = 'Camiseta'
             Title.Font.Charset = DEFAULT_CHARSET
             Title.Font.Color = clWindowText
             Title.Font.Height = -12
             Title.Font.Name = 'Segoe UI'
             Title.Font.Style = [fsBold]
-            Width = 89
+            Width = 65
             Visible = True
           end
           item
+            Alignment = taCenter
             Expanded = False
             FieldName = 'TAMANHO_CALCADO'
             Font.Charset = DEFAULT_CHARSET
@@ -122,13 +130,14 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
             Font.Height = -12
             Font.Name = 'Segoe UI'
             Font.Style = []
-            Title.Caption = 'Tam. do cal'#231'ado'
+            Title.Alignment = taCenter
+            Title.Caption = 'Cal'#231'ado'
             Title.Font.Charset = DEFAULT_CHARSET
             Title.Font.Color = clWindowText
             Title.Font.Height = -12
             Title.Font.Name = 'Segoe UI'
             Title.Font.Style = [fsBold]
-            Width = 95
+            Width = 61
             Visible = True
           end>
       end
@@ -136,150 +145,159 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
         Left = 0
         Top = 0
         Width = 616
-        Height = 145
+        Height = 185
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitTop = -6
-        object LblNome: TLabel
-          Left = 96
-          Top = 7
-          Width = 37
-          Height = 15
-          Caption = 'Nome:'
-          Color = clBackground
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentColor = False
-          ParentFont = False
-        end
-        object LblCpf: TLabel
-          Left = 107
-          Top = 34
-          Width = 23
-          Height = 15
-          Caption = 'CPF:'
-          Color = clBackground
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentColor = False
-          ParentFont = False
-        end
-        object LblTamCamisa: TLabel
-          Left = 13
-          Top = 92
-          Width = 122
-          Height = 15
-          Caption = 'Tamanho de camiseta:'
-          Color = clBackground
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentColor = False
-          ParentFont = False
-        end
-        object LblTamCalcado: TLabel
-          Left = 19
-          Top = 121
-          Width = 114
-          Height = 15
-          Caption = 'Tamanho de cal'#231'ado:'
-          Color = clBackground
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentColor = False
-          ParentFont = False
-        end
-        object LblEmail: TLabel
-          Left = 95
-          Top = 63
-          Width = 37
-          Height = 15
-          Caption = 'E-mail:'
-          Color = clBackground
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentColor = False
-          ParentFont = False
-        end
-        object edtNome: TEdit
-          Left = 138
-          Top = 2
-          Width = 314
-          Height = 23
+        object GbFiltrosPesquisa: TGroupBox
+          Left = 0
+          Top = 0
+          Width = 616
+          Height = 185
+          Align = alClient
+          Caption = 'Filtros de pesquisa:'
           TabOrder = 0
-          OnExit = GenericExit
-        end
-        object TcbTamanhoCamisa: TComboBox
-          Left = 138
-          Top = 89
-          Width = 45
-          Height = 23
-          Style = csDropDownList
-          TabOrder = 3
-          OnExit = GenericExit
-          Items.Strings = (
-            'PP'
-            'P'
-            'M'
-            'G'
-            'GG'
-            'XG'
-            '')
-        end
-        object EdtTamCalcado: TEdit
-          Left = 138
-          Top = 118
-          Width = 45
-          Height = 23
-          NumbersOnly = True
-          TabOrder = 4
-          OnExit = GenericExit
-        end
-        object EdtEmail: TEdit
-          Left = 138
-          Top = 60
-          Width = 314
-          Height = 23
-          TabOrder = 2
-          OnExit = GenericExit
-        end
-        object EdtCpf: TMaskEdit
-          Left = 138
-          Top = 31
-          Width = 87
-          Height = 23
-          EditMask = '999.999.999-99;1;_'
-          MaxLength = 14
-          TabOrder = 1
-          Text = '   .   .   -  '
-          OnExit = GenericExit
-        end
-        object BtnPesquisar: TBitBtn
-          Left = 488
-          Top = 34
-          Width = 105
-          Height = 49
-          Caption = '&Pesquisar'
-          ImageIndex = 5
-          Images = TiListaImagens
-          Style = bsNew
-          TabOrder = 5
-          OnClick = BtnPesquisarClick
+          ExplicitHeight = 217
+          object LblNome: TLabel
+            Left = 138
+            Top = 29
+            Width = 37
+            Height = 15
+            Caption = 'Nome:'
+            Color = clBackground
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -12
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+          end
+          object LblEmail: TLabel
+            Left = 138
+            Top = 58
+            Width = 37
+            Height = 15
+            Caption = 'E-mail:'
+            Color = clBackground
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -12
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+          end
+          object LblCpf: TLabel
+            Left = 152
+            Top = 87
+            Width = 23
+            Height = 15
+            Caption = 'CPF:'
+            Color = clBackground
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -12
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+          end
+          object LblTamCamisa: TLabel
+            Left = 93
+            Top = 116
+            Width = 82
+            Height = 15
+            Caption = 'Tam. Camiseta:'
+            Color = clBackground
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -12
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+          end
+          object LblTamCalcado: TLabel
+            Left = 101
+            Top = 145
+            Width = 74
+            Height = 15
+            Caption = 'Tam. Cal'#231'ado:'
+            Color = clBackground
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -12
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+          end
+          object edtNome: TEdit
+            Left = 178
+            Top = 26
+            Width = 314
+            Height = 23
+            TabOrder = 0
+            OnExit = GenericExit
+          end
+          object EdtEmail: TEdit
+            Left = 178
+            Top = 55
+            Width = 314
+            Height = 23
+            TabOrder = 1
+            OnExit = GenericExit
+          end
+          object EdtCpf: TMaskEdit
+            Left = 178
+            Top = 84
+            Width = 87
+            Height = 23
+            EditMask = '999.999.999-99;1;_'
+            MaxLength = 14
+            TabOrder = 2
+            Text = '   .   .   -  '
+            OnExit = GenericExit
+          end
+          object TcbTamanhoCamisa: TComboBox
+            Left = 178
+            Top = 113
+            Width = 45
+            Height = 23
+            Style = csDropDownList
+            TabOrder = 3
+            OnExit = GenericExit
+            Items.Strings = (
+              'PP'
+              'P'
+              'M'
+              'G'
+              'GG'
+              'XG'
+              '')
+          end
+          object EdtTamCalcado: TEdit
+            Left = 178
+            Top = 142
+            Width = 45
+            Height = 23
+            NumbersOnly = True
+            TabOrder = 4
+            OnExit = GenericExit
+          end
+          object BtnPesquisar: TBitBtn
+            Left = 387
+            Top = 114
+            Width = 105
+            Height = 49
+            Caption = '&Pesquisar'
+            ImageIndex = 5
+            Images = TiListaImagens
+            Style = bsNew
+            TabOrder = 5
+            OnClick = BtnPesquisarClick
+          end
         end
       end
     end
@@ -293,10 +311,161 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
         Height = 351
         Align = alClient
         TabOrder = 0
-        ExplicitLeft = 240
-        ExplicitTop = 144
-        ExplicitWidth = 185
-        ExplicitHeight = 41
+        ExplicitLeft = -3
+        ExplicitTop = 3
+        object TgDadosPessoais: TGroupBox
+          Left = 9
+          Top = 0
+          Width = 596
+          Height = 89
+          Caption = 'Dados pessoais:'
+          TabOrder = 0
+          object LblCpfDb: TLabel
+            Left = 43
+            Top = 58
+            Width = 23
+            Height = 15
+            Alignment = taRightJustify
+            Caption = 'CPF:'
+            Color = clBackground
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -12
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+          end
+          object LblEmailDb: TLabel
+            Left = 163
+            Top = 58
+            Width = 37
+            Height = 20
+            Alignment = taRightJustify
+            Caption = 'E-mail:'
+            Color = clBackground
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -12
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+          end
+          object LblNomeDb: TLabel
+            Left = 29
+            Top = 29
+            Width = 37
+            Height = 15
+            Alignment = taRightJustify
+            Caption = 'Nome:'
+            Color = clBackground
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -12
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+          end
+          object TdbCpf: TDBEdit
+            Left = 69
+            Top = 55
+            Width = 87
+            Height = 23
+            DataField = 'CPF'
+            DataSource = DsFuncionarios
+            TabOrder = 1
+            OnExit = GenericExit
+          end
+          object TdbEmail: TDBEdit
+            Left = 204
+            Top = 55
+            Width = 313
+            Height = 23
+            DataField = 'EMAIL'
+            DataSource = DsFuncionarios
+            TabOrder = 2
+            OnExit = GenericExit
+          end
+          object TdbNome: TDBEdit
+            Left = 69
+            Top = 26
+            Width = 448
+            Height = 23
+            DataField = 'NOME'
+            DataSource = DsFuncionarios
+            TabOrder = 0
+            OnExit = GenericExit
+          end
+        end
+        object GbMedidasUniforme: TGroupBox
+          Left = 9
+          Top = 95
+          Width = 596
+          Height = 75
+          Caption = 'Medidas:'
+          TabOrder = 1
+          object LblTamCalcadoDb: TLabel
+            Left = 13
+            Top = 34
+            Width = 53
+            Height = 15
+            Caption = 'Camiseta:'
+            Color = clBackground
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -12
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+          end
+          object LblTamCamisaDb: TLabel
+            Left = 139
+            Top = 34
+            Width = 45
+            Height = 15
+            Caption = 'Cal'#231'ado:'
+            Color = clBackground
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -12
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+          end
+          object TdbTamanhoCamisa: TDBComboBox
+            Left = 69
+            Top = 31
+            Width = 45
+            Height = 23
+            DataField = 'TAMANHO_CAMISA'
+            DataSource = DsFuncionarios
+            Items.Strings = (
+              'PP'
+              'P'
+              'M'
+              'G'
+              'GG'
+              'XG')
+            TabOrder = 0
+            OnExit = GenericExit
+          end
+          object TdbTamCalcado: TDBEdit
+            Left = 190
+            Top = 31
+            Width = 45
+            Height = 23
+            DataField = 'TAMANHO_CALCADO'
+            DataSource = DsFuncionarios
+            TabOrder = 1
+            OnExit = GenericExit
+            OnKeyDown = TdbTamCalcadoKeyDown
+            OnKeyPress = TdbTamCalcadoKeyPress
+          end
+        end
       end
     end
   end
@@ -385,7 +554,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
     end
   end
   object DsFuncionarios: TDataSource
-    DataSet = Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios
+    DataSet = DmCadastroFuncionariosDass.FdTabelaFuncionarios
     OnStateChange = DsFuncionariosStateChange
     Left = 576
     Top = 392
@@ -686,6 +855,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
     end
     object ActSalvar: TAction
       Caption = 'ActSalvar'
+      OnExecute = ActSalvarExecute
     end
   end
 end
