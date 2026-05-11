@@ -102,7 +102,6 @@ begin
       FdConexaoProjeto.Connected := True;
 
     FdTabelaFuncionarios.Close;
-    FdTabelaFuncionarios.SQL.Clear;
   except
     on E: Exception do
       raise Exception.Create('Erro ao conectar ao banco de dados: ' +

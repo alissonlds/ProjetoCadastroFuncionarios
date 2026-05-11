@@ -6,7 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.ComCtrls, Vcl.Grids,
-  Vcl.DBGrids, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Mask, Vcl.Buttons, System.ImageList, Vcl.ImgList;
+  Vcl.DBGrids, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Mask, Vcl.Buttons,
+  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList;
 
 type
   TFormCadastroFuncionariosDass = class(TForm)
@@ -17,7 +18,6 @@ type
     DbGridFuncionarios: TDBGrid;
     TpPainelPesquisa: TPanel;
     edtNome: TEdit;
-    TbBotaoPesquisar: TButton;
     TcbTamanhoCamisa: TComboBox;
     LblNome: TLabel;
     LblCpf: TLabel;
@@ -35,16 +35,29 @@ type
     BtnCancelar: TSpeedButton;
     BtnExcluir: TSpeedButton;
     TiListaImagens: TImageList;
+    BtnPesquisar: TBitBtn;
+    ActionList1: TActionList;
+    ActNovo: TAction;
+    ActEditar: TAction;
+    ActCancelar: TAction;
+    ActExcluir: TAction;
+    ActSalvar: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure GenericExit(Sender: TObject);
-    procedure TbBotaoPesquisarClick(Sender: TObject);
+    procedure BtnPesquisarClick(Sender: TObject);
+    procedure DsFuncionariosStateChange(Sender: TObject);
+    procedure ActNovoExecute(Sender: TObject);
+    procedure ActEditarExecute(Sender: TObject);
+    procedure ActCancelarExecute(Sender: TObject);
+    procedure ActExcluirExecute(Sender: TObject);
 
   private
     { Private declarations }
     procedure ValidarCampos(AControl: TControl = nil);
     Procedure ExecutarConsulta;
+    Procedure AtualizarBotoes;
   public
     { Public declarations }
 
@@ -66,9 +79,81 @@ begin
     ValidarCampos(TControl(Sender));
 end;
 
-procedure TFormCadastroFuncionariosDass.TbBotaoPesquisarClick(Sender: TObject);
+procedure TFormCadastroFuncionariosDass.ActCancelarExecute(Sender: TObject);
+begin
+  Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.Cancel;
+  TPPaginaControle.ActivePage := TsAbaListagem;
+end;
+
+procedure TFormCadastroFuncionariosDass.ActEditarExecute(Sender: TObject);
+begin
+  if not Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.IsEmpty then
+  begin
+    Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.Edit;
+    // Libera edição do registro selecionado
+    TPPaginaControle.ActivePage := TsAbaCadastro; // Vai para aba de cadastro
+    // dbeNome.SetFocus;
+  end;
+end;
+
+procedure TFormCadastroFuncionariosDass.ActExcluirExecute(Sender: TObject);
+begin
+
+  if Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.IsEmpty then
+    Exit;
+
+  if Application.MessageBox('Deseja realmente excluir?', 'Confirmação',
+    MB_YESNO + MB_ICONQUESTION) = IDYES then
+  begin
+    Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.Delete;
+    Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.ApplyUpdates(0);
+  end;
+end;
+
+procedure TFormCadastroFuncionariosDass.ActNovoExecute(Sender: TObject);
+begin
+
+  IF Not Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.Active then
+    Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.Open;
+
+  Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.Append;
+  TPPaginaControle.ActivePage := TsAbaCadastro; // Muda para a aba de Cadastro
+  // edtNome.SetFocus; // Põe o foco no primeiro campo
+  AtualizarBotoes;
+end;
+
+procedure TFormCadastroFuncionariosDass.AtualizarBotoes;
+var
+  EmEdicao: Boolean;
+
+begin
+
+  EmEdicao := Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.State
+    in [dsInsert, dsEdit];
+
+  BtnNovo.Enabled := not EmEdicao;
+  BtnEditar.Enabled := (not EmEdicao) and
+    (not Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.IsEmpty);
+  BtnExcluir.Enabled := (not EmEdicao) and
+    (not Dm00001CadastroFuncionariosDass.FdTabelaFuncionarios.IsEmpty);
+
+  BtnSalvar.Enabled := EmEdicao;
+  BtnCancelar.Enabled := EmEdicao;
+
+  // Extra: Bloquear as abas para o usuário não fugir sem salvar
+  // Isso desabilita a troca de abas enquanto estiver editando
+  // TabListagem.TabVisible := not EmEdicao;
+end;
+
+procedure TFormCadastroFuncionariosDass.BtnPesquisarClick(Sender: TObject);
 begin
   ExecutarConsulta;
+end;
+
+procedure TFormCadastroFuncionariosDass.DsFuncionariosStateChange
+  (Sender: TObject);
+begin
+  AtualizarBotoes;
 end;
 
 procedure TFormCadastroFuncionariosDass.ExecutarConsulta;
@@ -77,7 +162,8 @@ Var
 begin
   LFiltrosFuncionarios := Default (TFiltrosFuncionario);
   LFiltrosFuncionarios.Nome := edtNome.Text;
-  LFiltrosFuncionarios.Cpf := Dm00001CadastroFuncionariosDass.BuscouSomenteNumeros(EdtCpf.Text);
+  LFiltrosFuncionarios.Cpf := Dm00001CadastroFuncionariosDass.
+    BuscouSomenteNumeros(EdtCpf.Text);
   LFiltrosFuncionarios.Email := EdtEmail.Text;
   LFiltrosFuncionarios.TamCamiseta := TcbTamanhoCamisa.Text;
   LFiltrosFuncionarios.TamCalcado := StrToIntDef(EdtTamCalcado.Text, 0);
