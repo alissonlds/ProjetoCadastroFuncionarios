@@ -53,6 +53,6 @@ caminho padrão do repositório.
 * Consulta da listagem realizada com qualquer campo preenchido ou todos vazios (todos registros).
  ** Validado CPF e E-Mail válidos para consulta também. 
 ==========================================================================
-Repositório: C:\Projetos\Projeto Cadastro Funcionarios Dass
+Repositório: https://github.com/alissonlds/ProjetoCadastroFuncionarios.git
 Desenvolvido por: [Alisson Lemes de Souza]
 ==========================================================================
