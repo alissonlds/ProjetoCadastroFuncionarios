@@ -23,10 +23,14 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
     ActivePage = TsAbaListagem
     Align = alClient
     TabOrder = 0
-    ExplicitTop = 0
-    ExplicitHeight = 441
     object TsAbaListagem: TTabSheet
       Caption = '1. Listagem funcion'#225'rios'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
       object DbGridFuncionarios: TDBGrid
         Left = 0
         Top = 185
@@ -156,6 +160,12 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
           Height = 185
           Align = alClient
           Caption = 'Filtros de pesquisa:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          ParentFont = False
           TabOrder = 0
           ExplicitHeight = 217
           object LblNome: TLabel
@@ -303,7 +313,13 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
     end
     object TsAbaCadastro: TTabSheet
       Caption = '2. Cadastro funcion'#225'rios'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = []
       ImageIndex = 1
+      ParentFont = False
       object TpPainelCadastro: TPanel
         Left = 0
         Top = 0
@@ -311,14 +327,20 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
         Height = 351
         Align = alClient
         TabOrder = 0
-        ExplicitLeft = -3
         ExplicitTop = 3
-        object TgDadosPessoais: TGroupBox
-          Left = 9
-          Top = 0
-          Width = 596
-          Height = 89
+        object GbDadosPessoais: TGroupBox
+          Left = 1
+          Top = 49
+          Width = 614
+          Height = 104
+          Align = alTop
           Caption = 'Dados pessoais:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          ParentFont = False
           TabOrder = 0
           object LblCpfDb: TLabel
             Left = 43
@@ -400,12 +422,22 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
           end
         end
         object GbMedidasUniforme: TGroupBox
-          Left = 9
-          Top = 95
-          Width = 596
+          Left = 1
+          Top = 153
+          Width = 614
           Height = 75
+          Align = alTop
           Caption = 'Medidas:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          ParentFont = False
           TabOrder = 1
+          ExplicitLeft = -4
+          ExplicitTop = 200
+          ExplicitWidth = 609
           object LblTamCalcadoDb: TLabel
             Left = 13
             Top = 34
@@ -464,6 +496,102 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
             OnExit = GenericExit
             OnKeyDown = TdbTamCalcadoKeyDown
             OnKeyPress = TdbTamCalcadoKeyPress
+          end
+        end
+        object TpPainelRegistros: TPanel
+          Left = 1
+          Top = 1
+          Width = 614
+          Height = 48
+          Align = alTop
+          BevelOuter = bvNone
+          TabOrder = 2
+          object TpPainelCentral: TPanel
+            Left = 151
+            Top = 0
+            Width = 279
+            Height = 49
+            BevelOuter = bvNone
+            TabOrder = 0
+            object BtnAnterior: TSpeedButton
+              AlignWithMargins = True
+              Left = 70
+              Top = 3
+              Width = 65
+              Height = 43
+              Margins.Left = 5
+              Margins.Right = 5
+              Action = ActRegistroAnterior
+              Align = alLeft
+              Caption = '<'
+              Flat = True
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -12
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+              ExplicitHeight = 91
+            end
+            object BtnPrimeiro: TSpeedButton
+              Left = 0
+              Top = 0
+              Width = 65
+              Height = 49
+              Margins.Left = 5
+              Margins.Right = 5
+              Action = ActPrimeiroRegistro
+              Align = alLeft
+              Caption = '|<<'
+              Flat = True
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -12
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+              ExplicitLeft = -5
+            end
+            object BtnProximo: TSpeedButton
+              AlignWithMargins = True
+              Left = 145
+              Top = 3
+              Width = 65
+              Height = 43
+              Margins.Left = 5
+              Margins.Right = 5
+              Action = ActProximoRegistro
+              Align = alLeft
+              Caption = '>'
+              Flat = True
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -12
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+              ExplicitHeight = 91
+            end
+            object BtnUltimo: TSpeedButton
+              AlignWithMargins = True
+              Left = 220
+              Top = 3
+              Width = 65
+              Height = 43
+              Margins.Left = 5
+              Margins.Right = 5
+              Action = ActUltimoRegistro
+              Align = alLeft
+              Caption = '|>>'
+              Flat = True
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -12
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+              ExplicitHeight = 91
+            end
           end
         end
       end
@@ -856,6 +984,22 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
     object ActSalvar: TAction
       Caption = 'ActSalvar'
       OnExecute = ActSalvarExecute
+    end
+    object ActPrimeiroRegistro: TAction
+      Caption = 'ActPrimeiroRegistro'
+      OnExecute = ActPrimeiroRegistroExecute
+    end
+    object ActUltimoRegistro: TAction
+      Caption = 'ActUltimoRegistro'
+      OnExecute = ActUltimoRegistroExecute
+    end
+    object ActRegistroAnterior: TAction
+      Caption = 'ActRegistroAnterior'
+      OnExecute = ActRegistroAnteriorExecute
+    end
+    object ActProximoRegistro: TAction
+      Caption = 'ActProximoRegistro'
+      OnExecute = ActProximoRegistroExecute
     end
   end
 end

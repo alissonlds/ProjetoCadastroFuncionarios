@@ -52,9 +52,19 @@ type
     TdbEmail: TDBEdit;
     TdbCpf: TDBEdit;
     TdbNome: TDBEdit;
-    TgDadosPessoais: TGroupBox;
+    GbDadosPessoais: TGroupBox;
     GbMedidasUniforme: TGroupBox;
     GbFiltrosPesquisa: TGroupBox;
+    TpPainelRegistros: TPanel;
+    BtnPrimeiro: TSpeedButton;
+    BtnAnterior: TSpeedButton;
+    BtnProximo: TSpeedButton;
+    BtnUltimo: TSpeedButton;
+    ActPrimeiroRegistro: TAction;
+    ActUltimoRegistro: TAction;
+    ActRegistroAnterior: TAction;
+    ActProximoRegistro: TAction;
+    TpPainelCentral: TPanel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -73,6 +83,10 @@ type
     procedure DbGridFuncionariosDrawColumnCell(Sender: TObject;
       const Rect: TRect; DataCol: Integer; Column: TColumn;
       State: TGridDrawState);
+    procedure ActPrimeiroRegistroExecute(Sender: TObject);
+    procedure ActUltimoRegistroExecute(Sender: TObject);
+    procedure ActRegistroAnteriorExecute(Sender: TObject);
+    procedure ActProximoRegistroExecute(Sender: TObject);
 
   private
     { Private declarations }
@@ -99,17 +113,21 @@ begin
   if (Sender is TControl) then
     ValidarCampos(TControl(Sender));
 end;
-//Chamar salvar no último campo.
+
+// Chamar salvar no último campo.
 procedure TFormCadastroFuncionariosDass.TdbTamCalcadoKeyDown(Sender: TObject;
   var Key: Word; Shift: TShiftState);
 begin
-  if Key = VK_RETURN then
+  if (Key = VK_RETURN) or (Key = VK_DOWN) then
   begin
     Key := 0;
-    BtnSalvar.Click;
+    IF DmCadastroFuncionariosDass.FdTabelaFuncionarios.State
+      in [dsInsert, dsEdit] then
+      ActSalvarExecute(Nil);
   end;
 end;
-//Forçar dataset a entrar em edição.
+
+// Forçar dataset a entrar em edição.
 procedure TFormCadastroFuncionariosDass.TdbTamCalcadoKeyPress(Sender: TObject;
   var Key: Char);
 begin
@@ -177,6 +195,31 @@ begin
     TdbNome.SetFocus;
 end;
 
+// Ação dos botões de registro.
+procedure TFormCadastroFuncionariosDass.ActPrimeiroRegistroExecute
+  (Sender: TObject);
+begin
+  DmCadastroFuncionariosDass.FdTabelaFuncionarios.First;
+end;
+
+procedure TFormCadastroFuncionariosDass.ActProximoRegistroExecute
+  (Sender: TObject);
+begin
+  DmCadastroFuncionariosDass.FdTabelaFuncionarios.Next;
+end;
+
+procedure TFormCadastroFuncionariosDass.ActRegistroAnteriorExecute
+  (Sender: TObject);
+begin
+  DmCadastroFuncionariosDass.FdTabelaFuncionarios.Prior;
+end;
+
+procedure TFormCadastroFuncionariosDass.ActUltimoRegistroExecute
+  (Sender: TObject);
+begin
+  DmCadastroFuncionariosDass.FdTabelaFuncionarios.Last;
+end;
+
 // Ação salvar registro.
 procedure TFormCadastroFuncionariosDass.ActSalvarExecute(Sender: TObject);
 begin
@@ -195,14 +238,29 @@ begin
       Exit;
     End;
 
+    ValidarCampos(Nil);
+
     DmCadastroFuncionariosDass.FdTabelaFuncionarios.Post;
-    DmCadastroFuncionariosDass.FdTabelaFuncionarios.ApplyUpdates(0);
+
+    if DmCadastroFuncionariosDass.FdTabelaFuncionarios.CachedUpdates then
+    Begin
+      DmCadastroFuncionariosDass.FdTabelaFuncionarios.ApplyUpdates(-1);
+      DmCadastroFuncionariosDass.FdTabelaFuncionarios.CommitUpdates;
+    End;
 
     Application.MessageBox('O cadastro foi atualizado com sucesso.',
       'Confirmação', MB_OK + MB_ICONINFORMATION);
+
     TPPaginaControle.ActivePage := TsAbaListagem;
+    DbGridFuncionarios.SetFocus;
+
+    IF DmCadastroFuncionariosDass.FdTabelaFuncionarios.State
+      in [dsEdit, dsInsert] then
+      DmCadastroFuncionariosDass.FdTabelaFuncionarios.Cancel;
 
   except
+    on E: EAbort do
+      Exit;
     on E: Exception do
       Application.MessageBox(PChar('Erro ao gravar: ' + E.Message),
         'Erro do Sistema', MB_OK + MB_ICONERROR);
@@ -217,6 +275,15 @@ var
 begin
   EmEdicao := DmCadastroFuncionariosDass.FdTabelaFuncionarios.State
     in [dsInsert, dsEdit];
+
+  BtnPrimeiro.Enabled := (not EmEdicao) and
+    (not DmCadastroFuncionariosDass.FdTabelaFuncionarios.Bof);
+  BtnAnterior.Enabled := (not EmEdicao) and
+    (not DmCadastroFuncionariosDass.FdTabelaFuncionarios.Bof);
+  BtnProximo.Enabled := (not EmEdicao) and
+    (not DmCadastroFuncionariosDass.FdTabelaFuncionarios.Eof);
+  BtnUltimo.Enabled := (not EmEdicao) and
+    (not DmCadastroFuncionariosDass.FdTabelaFuncionarios.Eof);
 
   BtnNovo.Enabled := not EmEdicao;
   BtnEditar.Enabled := (not EmEdicao) and
@@ -254,7 +321,8 @@ procedure TFormCadastroFuncionariosDass.DbGridFuncionariosDrawColumnCell
   (Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
   State: TGridDrawState);
 begin
-  if gdSelected in State then
+  if (gdSelected in State) AND
+    (DmCadastroFuncionariosDass.FdTabelaFuncionarios.State = dsBrowse) then
   begin
     DbGridFuncionarios.Canvas.Brush.Color := clHighlight;
     DbGridFuncionarios.Canvas.Font.Color := clHighlightText;
