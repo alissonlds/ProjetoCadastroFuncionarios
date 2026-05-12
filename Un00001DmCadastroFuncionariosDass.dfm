@@ -4,13 +4,14 @@ object DmCadastroFuncionariosDass: TDmCadastroFuncionariosDass
   Width = 640
   object FdConexaoProjeto: TFDConnection
     Params.Strings = (
-      'Database=C:\Projetos\Base de dados\FUNCIONARIOS_DASS.FDB'
+      
+        'Database=C:\Projetos\Projeto Cadastro Funcionarios Dass\Base de ' +
+        'dados\FUNCIONARIOS_DASS.FDB'
       'User_Name=SYSDBA'
       'Password=masterkey'
       'Protocol=TCPIP'
       'Server=localhost'
       'DriverID=FB')
-    Connected = True
     Left = 88
     Top = 32
   end
