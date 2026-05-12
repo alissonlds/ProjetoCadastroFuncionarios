@@ -22,9 +22,13 @@ object DmCadastroFuncionariosDass: TDmCadastroFuncionariosDass
     Top = 32
   end
   object FdTabelaFuncionarios: TFDQuery
+    AfterOpen = FdTabelaFuncionariosAfterOpen
     BeforePost = FdTabelaFuncionariosBeforePost
-    CachedUpdates = True
+    OnNewRecord = FdTabelaFuncionariosNewRecord
     Connection = FdConexaoProjeto
+    FetchOptions.AssignedValues = [evMode, evRecordCountMode]
+    FetchOptions.Mode = fmAll
+    FetchOptions.RecordCountMode = cmTotal
     SQL.Strings = (
       'SELECT * FROM FUNCIONARIOS')
     Left = 80

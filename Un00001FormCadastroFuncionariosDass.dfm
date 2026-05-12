@@ -23,6 +23,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
     ActivePage = TsAbaListagem
     Align = alClient
     TabOrder = 0
+    OnChange = TPPaginaControleChange
     object TsAbaListagem: TTabSheet
       Caption = '1. Listagem funcion'#225'rios'
       Font.Charset = DEFAULT_CHARSET
@@ -328,6 +329,24 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
         Align = alClient
         TabOrder = 0
         ExplicitTop = 3
+        object LblContadorFuncionarios: TLabel
+          Left = 1
+          Top = 228
+          Width = 614
+          Height = 15
+          Align = alTop
+          Alignment = taCenter
+          Caption = '---'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+          ExplicitLeft = 152
+          ExplicitTop = 234
+          ExplicitWidth = 285
+        end
         object GbDadosPessoais: TGroupBox
           Left = 1
           Top = 49
@@ -342,6 +361,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
           Font.Style = []
           ParentFont = False
           TabOrder = 0
+          ExplicitTop = 50
           object LblCpfDb: TLabel
             Left = 43
             Top = 58
@@ -435,9 +455,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
           Font.Style = []
           ParentFont = False
           TabOrder = 1
-          ExplicitLeft = -4
-          ExplicitTop = 200
-          ExplicitWidth = 609
+          ExplicitTop = 154
           object LblTamCalcadoDb: TLabel
             Left = 13
             Top = 34
@@ -570,7 +588,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
               Font.Name = 'Segoe UI'
               Font.Style = [fsBold]
               ParentFont = False
-              ExplicitHeight = 91
+              ExplicitTop = -1
             end
             object BtnUltimo: TSpeedButton
               AlignWithMargins = True
@@ -683,7 +701,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
   end
   object DsFuncionarios: TDataSource
     DataSet = DmCadastroFuncionariosDass.FdTabelaFuncionarios
-    OnStateChange = DsFuncionariosStateChange
+    OnDataChange = DsFuncionariosDataChange
     Left = 576
     Top = 392
   end

@@ -65,12 +65,12 @@ type
     ActRegistroAnterior: TAction;
     ActProximoRegistro: TAction;
     TpPainelCentral: TPanel;
+    LblContadorFuncionarios: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure GenericExit(Sender: TObject);
     procedure BtnPesquisarClick(Sender: TObject);
-    procedure DsFuncionariosStateChange(Sender: TObject);
     procedure ActNovoExecute(Sender: TObject);
     procedure ActEditarExecute(Sender: TObject);
     procedure ActCancelarExecute(Sender: TObject);
@@ -87,6 +87,8 @@ type
     procedure ActUltimoRegistroExecute(Sender: TObject);
     procedure ActRegistroAnteriorExecute(Sender: TObject);
     procedure ActProximoRegistroExecute(Sender: TObject);
+    procedure TPPaginaControleChange(Sender: TObject);
+    procedure DsFuncionariosDataChange(Sender: TObject; Field: TField);
 
   private
     { Private declarations }
@@ -141,10 +143,19 @@ begin
   end;
 end;
 
+// Se só trocar aba atualiza botões.
+procedure TFormCadastroFuncionariosDass.TPPaginaControleChange(Sender: TObject);
+begin
+  if DmCadastroFuncionariosDass.FdTabelaFuncionarios.Active then
+    AtualizarBotoes;
+end;
+
 // Ação cancelar inserção/edição.
 procedure TFormCadastroFuncionariosDass.ActCancelarExecute(Sender: TObject);
 begin
   DmCadastroFuncionariosDass.FdTabelaFuncionarios.Cancel;
+  if not DmCadastroFuncionariosDass.FdTabelaFuncionarios.IsEmpty then
+    DmCadastroFuncionariosDass.FdTabelaFuncionarios.First;
   TPPaginaControle.ActivePage := TsAbaListagem;
   DbGridFuncionarios.SetFocus;
 
@@ -165,16 +176,26 @@ end;
 // Ação excluir registro.
 procedure TFormCadastroFuncionariosDass.ActExcluirExecute(Sender: TObject);
 begin
+  Try
+    if DmCadastroFuncionariosDass.FdTabelaFuncionarios.IsEmpty then
+      Exit;
 
-  if DmCadastroFuncionariosDass.FdTabelaFuncionarios.IsEmpty then
-    Exit;
-
-  if Application.MessageBox('Deseja realmente excluir?', 'Confirmação',
-    MB_YESNO + MB_ICONQUESTION) = IDYES then
-  begin
-    DmCadastroFuncionariosDass.FdTabelaFuncionarios.Delete;
-    DmCadastroFuncionariosDass.FdTabelaFuncionarios.ApplyUpdates(0);
-  end;
+    if Application.MessageBox('Deseja realmente excluir?', 'Confirmação',
+      MB_YESNO + MB_ICONQUESTION) = IDYES then
+    begin
+      if not DmCadastroFuncionariosDass.FdConexaoProjeto.InTransaction then
+        DmCadastroFuncionariosDass.FdConexaoProjeto.StartTransaction;
+      DmCadastroFuncionariosDass.FdTabelaFuncionarios.Delete;
+      DmCadastroFuncionariosDass.FdConexaoProjeto.Commit;
+    end;
+  Except
+    on E: Exception do
+    begin
+      DmCadastroFuncionariosDass.FdConexaoProjeto.Rollback;
+      Application.MessageBox(PChar('Erro ao excluir: ' + E.Message),
+        'Confirmação', MB_OK + MB_ICONERROR);
+    end;
+  End;
 end;
 
 // Ação novo registro.
@@ -240,13 +261,11 @@ begin
 
     ValidarCampos(Nil);
 
-    DmCadastroFuncionariosDass.FdTabelaFuncionarios.Post;
+    if not DmCadastroFuncionariosDass.FdConexaoProjeto.InTransaction then
+      DmCadastroFuncionariosDass.FdConexaoProjeto.StartTransaction;
 
-    if DmCadastroFuncionariosDass.FdTabelaFuncionarios.CachedUpdates then
-    Begin
-      DmCadastroFuncionariosDass.FdTabelaFuncionarios.ApplyUpdates(-1);
-      DmCadastroFuncionariosDass.FdTabelaFuncionarios.CommitUpdates;
-    End;
+    DmCadastroFuncionariosDass.FdTabelaFuncionarios.Post;
+    DmCadastroFuncionariosDass.FdConexaoProjeto.Commit;
 
     Application.MessageBox('O cadastro foi atualizado com sucesso.',
       'Confirmação', MB_OK + MB_ICONINFORMATION);
@@ -271,28 +290,63 @@ end;
 procedure TFormCadastroFuncionariosDass.AtualizarBotoes;
 var
   EmEdicao: Boolean;
-
+  LPosicaoAtual, LTotalRegistros: Integer;
 begin
+
+  if not DmCadastroFuncionariosDass.FdTabelaFuncionarios.Active then
+  begin
+    BtnNovo.Enabled := True;
+    BtnEditar.Enabled := False;
+    BtnExcluir.Enabled := False;
+    BtnSalvar.Enabled := False;
+    BtnCancelar.Enabled := False;
+
+    BtnPrimeiro.Enabled := False;
+    BtnAnterior.Enabled := False;
+    BtnProximo.Enabled := False;
+    BtnUltimo.Enabled := False;
+
+    TsAbaListagem.TabVisible := True;
+    Exit;
+  end;
+
   EmEdicao := DmCadastroFuncionariosDass.FdTabelaFuncionarios.State
     in [dsInsert, dsEdit];
+  LPosicaoAtual := DmCadastroFuncionariosDass.FdTabelaFuncionarios.RecNo;
+  LTotalRegistros := DmCadastroFuncionariosDass.FdTabelaFuncionarios.
+    RecordCount;
 
-  BtnPrimeiro.Enabled := (not EmEdicao) and
-    (not DmCadastroFuncionariosDass.FdTabelaFuncionarios.Bof);
-  BtnAnterior.Enabled := (not EmEdicao) and
-    (not DmCadastroFuncionariosDass.FdTabelaFuncionarios.Bof);
-  BtnProximo.Enabled := (not EmEdicao) and
-    (not DmCadastroFuncionariosDass.FdTabelaFuncionarios.Eof);
-  BtnUltimo.Enabled := (not EmEdicao) and
-    (not DmCadastroFuncionariosDass.FdTabelaFuncionarios.Eof);
+  if (LPosicaoAtual <= 0) and (LTotalRegistros > 0) then
+    LPosicaoAtual := 1;
+
+  BtnPrimeiro.Enabled := (not EmEdicao) and (LPosicaoAtual > 1);
+  BtnAnterior.Enabled := (not EmEdicao) and (LPosicaoAtual > 1);
+
+  BtnProximo.Enabled := (not EmEdicao) and (LPosicaoAtual < LTotalRegistros) and
+    (LTotalRegistros > 0);
+
+  BtnUltimo.Enabled := (not EmEdicao) and (LPosicaoAtual < LTotalRegistros) and
+    (LTotalRegistros > 0);
 
   BtnNovo.Enabled := not EmEdicao;
+
   BtnEditar.Enabled := (not EmEdicao) and
     (not DmCadastroFuncionariosDass.FdTabelaFuncionarios.IsEmpty);
+
   BtnExcluir.Enabled := (not EmEdicao) and
     (not DmCadastroFuncionariosDass.FdTabelaFuncionarios.IsEmpty);
 
   BtnSalvar.Enabled := EmEdicao;
   BtnCancelar.Enabled := EmEdicao;
+
+  if DmCadastroFuncionariosDass.FdTabelaFuncionarios.State = dsInsert then
+    LblContadorFuncionarios.Caption := 'Novo Registro...'
+  Else if DmCadastroFuncionariosDass.FdTabelaFuncionarios.State = dsEdit then
+    LblContadorFuncionarios.Caption := 'Editando Registro...'
+  else
+    LblContadorFuncionarios.Caption := Format('Funcionário %d de %d',
+      [DmCadastroFuncionariosDass.FdTabelaFuncionarios.RecNo,
+      DmCadastroFuncionariosDass.FdTabelaFuncionarios.RecordCount]);
 
   TsAbaListagem.TabVisible := not EmEdicao;
 end;
@@ -331,10 +385,11 @@ begin
 end;
 
 // Atualizar botões ao navegar pelo pacote.
-procedure TFormCadastroFuncionariosDass.DsFuncionariosStateChange
-  (Sender: TObject);
+procedure TFormCadastroFuncionariosDass.DsFuncionariosDataChange
+  (Sender: TObject; Field: TField);
 begin
-  AtualizarBotoes;
+  if Field = nil then
+    AtualizarBotoes;
 end;
 
 // Atribuir parâmetros e chamar médodo de consulta da grade.
@@ -394,6 +449,8 @@ end;
 // Método validador dos campos.
 // Campos que são DBWARE não permitir vazio.
 procedure TFormCadastroFuncionariosDass.ValidarCampos(AControl: TControl);
+VAr
+  LIdAtual: Integer;
 begin
   IF DsFuncionarios.State in [dsEdit, dsInsert] then
   Begin
@@ -424,6 +481,19 @@ begin
         Abort;
       End;
 
+      LIdAtual := DmCadastroFuncionariosDass.FdTabelaFuncionarios.FieldByName
+        ('ID').AsInteger;
+
+      if DmCadastroFuncionariosDass.ValidouCPFExiste(TdbCpf.Text, LIdAtual) then
+      begin
+        Application.MessageBox
+          ('Atenção: Este CPF já está cadastrado para outro funcionário.',
+          'Validação', MB_OK + MB_ICONWARNING);
+        TdbCpf.SetFocus;
+        TdbCpf.SelectAll;
+        Abort;
+        TdbCpf.SelectAll;
+      end;
     end;
 
     if (AControl = nil) or (AControl = TdbEmail) then

@@ -25,6 +25,8 @@ type
     procedure FdTabelaFuncionariosCPFGetText(Sender: TField; var Text: string;
       DisplayText: Boolean);
     procedure FdTabelaFuncionariosBeforePost(DataSet: TDataSet);
+    procedure FdTabelaFuncionariosAfterOpen(DataSet: TDataSet);
+    procedure FdTabelaFuncionariosNewRecord(DataSet: TDataSet);
 
   private
     { Private declarations }
@@ -38,6 +40,7 @@ type
     Function ValidouCampoVazio(const Avalor: String): Boolean;
     function BuscouSomenteNumeros(const AValue: string): string;
     Procedure ConsultarFuncionarios(AFiltro: TFiltrosFuncionario);
+    Function ValidouCPFExiste(ACPF: String; AIdIgnorar: Integer): Boolean;
 
   end;
 
@@ -51,7 +54,8 @@ Uses
   System.Math, System.StrUtils, System.Character;
 
 {$R *.dfm}
-//Limpar String e manter somente números.
+
+// Limpar String e manter somente números.
 function TDmCadastroFuncionariosDass.BuscouSomenteNumeros
   (const AValue: string): string;
 var
@@ -64,7 +68,8 @@ begin
       Result := Result + LCaractere;
   end;
 end;
-//Método de consulta de dados.
+
+// Método de consulta de dados.
 procedure TDmCadastroFuncionariosDass.ConsultarFuncionarios
   (AFiltro: TFiltrosFuncionario);
 begin
@@ -96,28 +101,39 @@ begin
   end;
 
 end;
-//Criar conexão.
+
+// Criar conexão.
 procedure TDmCadastroFuncionariosDass.DataModuleCreate(Sender: TObject);
 begin
   Try
     if not FdConexaoProjeto.Connected then
       FdConexaoProjeto.Connected := True;
 
-    FdTabelaFuncionarios.Close;
+    FdTabelaFuncionarios.Active := False;
   except
     on E: Exception do
       Application.MessageBox(PChar('Erro ao conectar ao banco de dados: ' +
         E.Message), 'Erro do Sistema', MB_OK + MB_ICONERROR);
   end;
 end;
-//Gravar caixa alta o nome.
+
+// Gravar caixa alta o nome.
+
 procedure TDmCadastroFuncionariosDass.FdTabelaFuncionariosBeforePost
   (DataSet: TDataSet);
 begin
   DataSet.FieldByName('NOME').AsString :=
     UpperCase(DataSet.FieldByName('NOME').AsString);
 end;
-//Formatar CPF.
+
+// Manter ordenação por nome.
+procedure TDmCadastroFuncionariosDass.FdTabelaFuncionariosAfterOpen
+  (DataSet: TDataSet);
+begin
+  DmCadastroFuncionariosDass.FdTabelaFuncionarios.IndexFieldNames := 'NOME';
+end;
+
+// Formatar CPF.
 procedure TDmCadastroFuncionariosDass.FdTabelaFuncionariosCPFGetText
   (Sender: TField; var Text: string; DisplayText: Boolean);
 begin
@@ -138,7 +154,16 @@ begin
     Text := Sender.AsString;
   end;
 End;
-//Validar campos vazios.
+
+procedure TDmCadastroFuncionariosDass.FdTabelaFuncionariosNewRecord
+  (DataSet: TDataSet);
+begin
+  DataSet.FieldByName('ID').AsInteger :=
+    DmCadastroFuncionariosDass.FdConexaoProjeto.ExecSQLScalar
+    ('SELECT NEXT VALUE FOR GEN_FUNCIONARIOS_ID FROM RDB$DATABASE');
+end;
+
+// Validar campos vazios.
 function TDmCadastroFuncionariosDass.ValidouCampoVazio
   (const Avalor: String): Boolean;
 Var
@@ -150,7 +175,8 @@ begin
   LTexto := Trim(LTexto);
   Result := Trim(LTexto) <> Emptystr;
 end;
-//Validador de CPF.
+
+// Validador de CPF.
 Function TDmCadastroFuncionariosDass.ValidouCPF(const ACPF: string): Boolean;
 var
   LCnpjCpf: string;
@@ -203,7 +229,24 @@ begin
         MB_OK + MB_ICONEXCLAMATION);
   end;
 end;
-//Validador e-mail.
+
+// Valida Cpf Existente.
+function TDmCadastroFuncionariosDass.ValidouCPFExiste(ACPF: String;
+  AIdIgnorar: Integer): Boolean;
+begin
+  ACPF := StringReplace(ACPF, '.', '', [rfReplaceAll]);
+  ACPF := StringReplace(ACPF, '-', '', [rfReplaceAll]);
+
+  if ACPF.Trim.IsEmpty then
+    Exit(False);
+
+  // Executa a consulta
+  Result := FdConexaoProjeto.ExecSQLScalar
+    ('SELECT COUNT(*) FROM FUNCIONARIOS WHERE CPF = :CPF AND ID <> :ID',
+    [ACPF, AIdIgnorar]) > 0;
+end;
+
+// Validador e-mail.
 function TDmCadastroFuncionariosDass.ValidouEmail(const AEmail: string)
   : Boolean;
 const
@@ -220,7 +263,8 @@ begin
     Application.MessageBox('O e-mail não é válido.', 'Validação',
       MB_OK + MB_ICONEXCLAMATION);
 end;
-//Validador Nome.
+
+// Validador Nome.
 function TDmCadastroFuncionariosDass.ValidouNome(Atexto: String): Boolean;
 begin
   Result := True;
@@ -231,7 +275,8 @@ begin
       MB_OK + MB_ICONEXCLAMATION);
   End;
 end;
-//Validador tamanho do calçado.
+
+// Validador tamanho do calçado.
 function TDmCadastroFuncionariosDass.ValidouTamanhoCalcado
   (const ATam: Integer): Boolean;
 begin
@@ -244,7 +289,8 @@ begin
       'Validação', MB_OK + MB_ICONEXCLAMATION);
   end;
 end;
-//Validador tamanho da camisa.
+
+// Validador tamanho da camisa.
 function TDmCadastroFuncionariosDass.ValidouTamanhoCamisa
   (const ATam: string): Boolean;
 begin
