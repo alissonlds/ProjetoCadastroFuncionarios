@@ -1,7 +1,7 @@
 object DmCadastroFuncionariosDass: TDmCadastroFuncionariosDass
   OnCreate = DataModuleCreate
-  Height = 480
-  Width = 640
+  Height = 188
+  Width = 268
   object FdConexaoProjeto: TFDConnection
     Params.Strings = (
       
