@@ -182,6 +182,7 @@ Function TDmCadastroFuncionariosDass.ValidouCPF(const ACPF: string): Boolean;
 var
   LCnpjCpf: string;
   I, LSoma, LDigito1, LDigito2: Integer;
+  LMudouRegistro: Boolean;
 begin
   Result := True;
   LCnpjCpf := '';
@@ -190,6 +191,12 @@ begin
   for I := 1 to Length(ACPF) do
     if CharInSet(ACPF[I], ['0' .. '9']) then
       LCnpjCpf := LCnpjCpf + ACPF[I];
+
+  LMudouRegistro := FdTabelaFuncionarios.FieldByName('CPF').AsString <>
+    FdTabelaFuncionarios.FieldByName('CPF').OldValue;
+
+  If Not LMudouRegistro then
+    Exit;
 
   // 2. Verificação de consistência
   if Length(LCnpjCpf) <> 11 then
@@ -236,7 +243,7 @@ begin
   end;
 end;
 
-// Valida Cpf Existente.
+// Valida se Cpf Existente.
 function TDmCadastroFuncionariosDass.ValidouCPFExiste(ACPF: String;
   AIdIgnorar: Integer): Boolean;
 begin
