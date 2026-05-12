@@ -194,7 +194,12 @@ begin
   // 2. Verificação de consistência
   if Length(LCnpjCpf) <> 11 then
     Result := False;
-  if (LCnpjCpf = '00000000000') or (LCnpjCpf = '11111111111') then
+
+  If (LCnpjCpf = '00000000000') or (LCnpjCpf = '11111111111') or
+    (LCnpjCpf = '22222222222') or (LCnpjCpf = '33333333333') or
+    (LCnpjCpf = '44444444444') or (LCnpjCpf = '55555555555') or
+    (LCnpjCpf = '66666666666') or (LCnpjCpf = '77777777777') or
+    (LCnpjCpf = '88888888888') or (LCnpjCpf = '99999999999') then
     Result := False;
 
   try
