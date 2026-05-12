@@ -382,6 +382,9 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
           ParentFont = False
           TabOrder = 0
           ExplicitTop = 50
+          DesignSize = (
+            614
+            104)
           object LblCpfDb: TLabel
             Left = 43
             Top = 58
@@ -443,18 +446,20 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
           object TdbEmail: TDBEdit
             Left = 204
             Top = 55
-            Width = 313
+            Width = 316
             Height = 23
+            Anchors = [akLeft, akTop, akRight]
             DataField = 'EMAIL'
             DataSource = DsFuncionarios
             TabOrder = 2
             OnExit = GenericExit
           end
           object TdbNome: TDBEdit
-            Left = 69
+            Left = 72
             Top = 26
             Width = 448
             Height = 23
+            Anchors = [akLeft, akTop, akRight]
             DataField = 'NOME'
             DataSource = DsFuncionarios
             TabOrder = 0
@@ -558,6 +563,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
               Top = 3
               Width = 65
               Height = 43
+              Hint = 'Registro anterior'
               Margins.Left = 5
               Margins.Right = 5
               Action = ActRegistroAnterior
@@ -577,6 +583,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
               Top = 0
               Width = 65
               Height = 49
+              Hint = 'Primeiro registro'
               Margins.Left = 5
               Margins.Right = 5
               Action = ActPrimeiroRegistro
@@ -590,6 +597,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
               Font.Style = [fsBold]
               ParentFont = False
               ExplicitLeft = -5
+              ExplicitTop = -7
             end
             object BtnProximo: TSpeedButton
               AlignWithMargins = True
@@ -597,6 +605,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
               Top = 3
               Width = 65
               Height = 43
+              Hint = 'Pr'#243'ximo registro'
               Margins.Left = 5
               Margins.Right = 5
               Action = ActProximoRegistro
@@ -617,6 +626,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
               Top = 3
               Width = 65
               Height = 43
+              Hint = #218'ltimo registro'
               Margins.Left = 5
               Margins.Right = 5
               Action = ActUltimoRegistro
