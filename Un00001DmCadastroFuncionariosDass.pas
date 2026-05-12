@@ -155,6 +155,7 @@ begin
   end;
 End;
 
+// Atribuir generator a novos registros.
 procedure TDmCadastroFuncionariosDass.FdTabelaFuncionariosNewRecord
   (DataSet: TDataSet);
 begin

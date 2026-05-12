@@ -491,6 +491,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
             Top = 31
             Width = 45
             Height = 23
+            Style = csDropDownList
             DataField = 'TAMANHO_CAMISA'
             DataSource = DsFuncionarios
             Items.Strings = (
