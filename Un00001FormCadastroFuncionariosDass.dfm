@@ -5,6 +5,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
   ClientHeight = 441
   ClientWidth = 624
   Color = clBtnFace
+  Constraints.MinWidth = 500
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
@@ -32,120 +33,6 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
-      object DbGridFuncionarios: TDBGrid
-        Left = 0
-        Top = 185
-        Width = 616
-        Height = 166
-        Align = alClient
-        DataSource = DsFuncionarios
-        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
-        TabOrder = 0
-        TitleFont.Charset = DEFAULT_CHARSET
-        TitleFont.Color = clWindowText
-        TitleFont.Height = -12
-        TitleFont.Name = 'Segoe UI'
-        TitleFont.Style = []
-        OnDrawColumnCell = DbGridFuncionariosDrawColumnCell
-        OnDblClick = DbGridFuncionariosDblClick
-        Columns = <
-          item
-            Expanded = False
-            FieldName = 'ID'
-            Title.Caption = 'Registro'
-            Visible = False
-          end
-          item
-            Expanded = False
-            FieldName = 'NOME'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -12
-            Font.Name = 'Segoe UI'
-            Font.Style = []
-            Title.Caption = 'Nome funcion'#225'rio'
-            Title.Font.Charset = DEFAULT_CHARSET
-            Title.Font.Color = clWindowText
-            Title.Font.Height = -12
-            Title.Font.Name = 'Segoe UI'
-            Title.Font.Style = [fsBold]
-            Width = 199
-            Visible = True
-          end
-          item
-            Alignment = taCenter
-            Expanded = False
-            FieldName = 'CPF'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -12
-            Font.Name = 'Segoe UI'
-            Font.Style = []
-            Title.Alignment = taCenter
-            Title.Font.Charset = DEFAULT_CHARSET
-            Title.Font.Color = clWindowText
-            Title.Font.Height = -12
-            Title.Font.Name = 'Segoe UI'
-            Title.Font.Style = [fsBold]
-            Width = 85
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'EMAIL'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -12
-            Font.Name = 'Segoe UI'
-            Font.Style = []
-            Title.Caption = 'E-mail'
-            Title.Font.Charset = DEFAULT_CHARSET
-            Title.Font.Color = clWindowText
-            Title.Font.Height = -12
-            Title.Font.Name = 'Segoe UI'
-            Title.Font.Style = [fsBold]
-            Width = 175
-            Visible = True
-          end
-          item
-            Alignment = taCenter
-            Expanded = False
-            FieldName = 'TAMANHO_CAMISA'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -12
-            Font.Name = 'Segoe UI'
-            Font.Style = []
-            Title.Alignment = taCenter
-            Title.Caption = 'Camiseta'
-            Title.Font.Charset = DEFAULT_CHARSET
-            Title.Font.Color = clWindowText
-            Title.Font.Height = -12
-            Title.Font.Name = 'Segoe UI'
-            Title.Font.Style = [fsBold]
-            Width = 65
-            Visible = True
-          end
-          item
-            Alignment = taCenter
-            Expanded = False
-            FieldName = 'TAMANHO_CALCADO'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -12
-            Font.Name = 'Segoe UI'
-            Font.Style = []
-            Title.Alignment = taCenter
-            Title.Caption = 'Cal'#231'ado'
-            Title.Font.Charset = DEFAULT_CHARSET
-            Title.Font.Color = clWindowText
-            Title.Font.Height = -12
-            Title.Font.Name = 'Segoe UI'
-            Title.Font.Style = [fsBold]
-            Width = 61
-            Visible = True
-          end>
-      end
       object TpPainelPesquisa: TPanel
         Left = 0
         Top = 0
@@ -153,13 +40,13 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
         Height = 185
         Align = alTop
         BevelOuter = bvNone
-        TabOrder = 1
+        TabOrder = 0
         object GbFiltrosPesquisa: TGroupBox
           Left = 0
           Top = 0
           Width = 616
           Height = 185
-          Align = alClient
+          Align = alTop
           Caption = 'Filtros de pesquisa:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -169,6 +56,9 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
           ParentFont = False
           TabOrder = 0
           ExplicitHeight = 217
+          DesignSize = (
+            616
+            185)
           object LblNome: TLabel
             Left = 138
             Top = 29
@@ -249,6 +139,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
             Top = 26
             Width = 314
             Height = 23
+            Anchors = [akLeft, akTop, akRight]
             TabOrder = 0
             OnExit = GenericExit
           end
@@ -257,6 +148,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
             Top = 55
             Width = 314
             Height = 23
+            Anchors = [akLeft, akTop, akRight]
             TabOrder = 1
             OnExit = GenericExit
           end
@@ -302,6 +194,7 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
             Top = 114
             Width = 105
             Height = 49
+            Anchors = [akTop, akRight]
             Caption = '&Pesquisar'
             ImageIndex = 5
             Images = TiListaImagens
@@ -309,6 +202,133 @@ object FormCadastroFuncionariosDass: TFormCadastroFuncionariosDass
             TabOrder = 5
             OnClick = BtnPesquisarClick
           end
+        end
+      end
+      object TpPainelGrid: TPanel
+        Left = 0
+        Top = 185
+        Width = 616
+        Height = 166
+        Align = alClient
+        BevelOuter = bvNone
+        TabOrder = 1
+        ExplicitLeft = 288
+        ExplicitTop = 224
+        ExplicitWidth = 185
+        ExplicitHeight = 41
+        object DbGridFuncionarios: TDBGrid
+          Left = 0
+          Top = 0
+          Width = 616
+          Height = 166
+          Align = alClient
+          DataSource = DsFuncionarios
+          Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+          TabOrder = 0
+          TitleFont.Charset = DEFAULT_CHARSET
+          TitleFont.Color = clWindowText
+          TitleFont.Height = -12
+          TitleFont.Name = 'Segoe UI'
+          TitleFont.Style = []
+          OnDrawColumnCell = DbGridFuncionariosDrawColumnCell
+          OnDblClick = DbGridFuncionariosDblClick
+          Columns = <
+            item
+              Expanded = False
+              FieldName = 'ID'
+              Title.Caption = 'Registro'
+              Visible = False
+            end
+            item
+              Expanded = False
+              FieldName = 'NOME'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -12
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              Title.Caption = 'Nome funcion'#225'rio'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clWindowText
+              Title.Font.Height = -12
+              Title.Font.Name = 'Segoe UI'
+              Title.Font.Style = [fsBold]
+              Width = 199
+              Visible = True
+            end
+            item
+              Alignment = taCenter
+              Expanded = False
+              FieldName = 'CPF'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -12
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              Title.Alignment = taCenter
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clWindowText
+              Title.Font.Height = -12
+              Title.Font.Name = 'Segoe UI'
+              Title.Font.Style = [fsBold]
+              Width = 85
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'EMAIL'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -12
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              Title.Caption = 'E-mail'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clWindowText
+              Title.Font.Height = -12
+              Title.Font.Name = 'Segoe UI'
+              Title.Font.Style = [fsBold]
+              Width = 175
+              Visible = True
+            end
+            item
+              Alignment = taCenter
+              Expanded = False
+              FieldName = 'TAMANHO_CAMISA'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -12
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              Title.Alignment = taCenter
+              Title.Caption = 'Camiseta'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clWindowText
+              Title.Font.Height = -12
+              Title.Font.Name = 'Segoe UI'
+              Title.Font.Style = [fsBold]
+              Width = 65
+              Visible = True
+            end
+            item
+              Alignment = taCenter
+              Expanded = False
+              FieldName = 'TAMANHO_CALCADO'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -12
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              Title.Alignment = taCenter
+              Title.Caption = 'Cal'#231'ado'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clWindowText
+              Title.Font.Height = -12
+              Title.Font.Name = 'Segoe UI'
+              Title.Font.Style = [fsBold]
+              Width = 61
+              Visible = True
+            end>
         end
       end
     end

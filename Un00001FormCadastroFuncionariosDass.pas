@@ -66,6 +66,7 @@ type
     ActProximoRegistro: TAction;
     TpPainelCentral: TPanel;
     LblContadorFuncionarios: TLabel;
+    TpPainelGrid: TPanel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
